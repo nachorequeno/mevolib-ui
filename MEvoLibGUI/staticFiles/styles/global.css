@@ -1,0 +1,19 @@
+body{
+    background-image: url("../images/homeBackground.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 40em;
+}
+
+.page_title{
+    color:rgb(110, 182, 245);
+}
+
+.form_label{
+    font-size: 1.25em ;
+}
+
+.successful_modal{
+    background-color: rgb(113, 188, 215);
+}

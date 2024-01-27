@@ -1,0 +1,2 @@
+usage: get_inference [-h] -t TOOL -i INPUT [-if INFORMAT] [-a ARGS] -o OUTPUT [-of OUTFORMAT] [-b BOOTSTRAPS]
+get_inference: error: the following arguments are required: -t/--tool, -o/--output

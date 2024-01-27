@@ -1,0 +1,62 @@
+Jan-19 18:38:23.252 [main] DEBUG nextflow.cli.Launcher - $> nextflow -Duser.country=US run nextflowFiles/workflows/align_inference/main.nf --unaln_files=/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/align_inference/prueba.fasta
+Jan-19 18:38:23.440 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 22.10.7
+Jan-19 18:38:23.463 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/sergio/.nextflow/plugins; core-plugins: nf-amazon@1.11.4,nf-azure@0.14.2,nf-codecommit@0.1.2,nf-console@1.0.4,nf-ga4gh@1.0.4,nf-google@1.4.5,nf-tower@1.5.6,nf-wave@0.5.4
+Jan-19 18:38:23.479 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jan-19 18:38:23.483 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jan-19 18:38:23.487 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jan-19 18:38:23.514 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jan-19 18:38:23.542 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/nextflow.config
+Jan-19 18:38:23.545 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/nextflow.config
+Jan-19 18:38:23.576 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-19 18:38:24.267 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from config declaration
+Jan-19 18:38:24.323 [main] INFO  nextflow.cli.CmdRun - Launching `nextflowFiles/workflows/align_inference/main.nf` [condescending_laplace] DSL2 - revision: 7cd2db8fc8
+Jan-19 18:38:24.325 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jan-19 18:38:24.325 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Jan-19 18:38:24.356 [main] DEBUG nextflow.secret.LocalSecretsProvider - Secrets store: /home/sergio/.nextflow/secrets/store.json
+Jan-19 18:38:24.373 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@2f1d0bbc] - activable => nextflow.secret.LocalSecretsProvider@2f1d0bbc
+Jan-19 18:38:24.510 [main] DEBUG nextflow.Session - Session UUID: c02f18be-05f4-4164-b6c9-9d3e3722d046
+Jan-19 18:38:24.511 [main] DEBUG nextflow.Session - Run name: condescending_laplace
+Jan-19 18:38:24.512 [main] DEBUG nextflow.Session - Executor pool size: 12
+Jan-19 18:38:24.531 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan-19 18:38:24.579 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 22.10.7 build 5853
+  Created: 18-02-2023 20:32 UTC 
+  System: Linux 5.15.133.1-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.13 on OpenJDK 64-Bit Server VM 11.0.21+9-post-Ubuntu-0ubuntu122.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 101100@DESKTOP-IDERQG7 [127.0.1.1]
+  CPUs: 12 - Mem: 7.7 GB (4.6 GB) - Swap: 2 GB (2 GB)
+Jan-19 18:38:24.633 [main] DEBUG nextflow.Session - Work-dir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work [v9fs]
+Jan-19 18:38:24.639 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/bin
+Jan-19 18:38:24.676 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jan-19 18:38:24.709 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-19 18:38:24.750 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jan-19 18:38:24.768 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 13; maxThreads: 1000
+Jan-19 18:38:24.936 [main] DEBUG nextflow.Session - Session start
+Jan-19 18:38:25.113 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-19 18:38:25.371 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-19 18:38:25.371 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-19 18:38:25.377 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-19 18:38:25.382 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=12; memory=7.7 GB; capacity=12; pollInterval=100ms; dumpInterval=5m
+Jan-19 18:38:25.479 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-19 18:38:25.479 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-19 18:38:25.483 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: GET_ALIGN, GET_INFERENCE
+Jan-19 18:38:25.484 [main] DEBUG nextflow.Session - Igniting dataflow network (2)
+Jan-19 18:38:25.484 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > GET_ALIGN
+Jan-19 18:38:25.485 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > GET_INFERENCE
+Jan-19 18:38:25.486 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jan-19 18:38:25.487 [main] DEBUG nextflow.Session - Session await
+Jan-19 18:38:25.712 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-19 18:38:25.716 [Task submitter] INFO  nextflow.Session - [f8/ca21fa] Submitted process > GET_ALIGN (null)
+Jan-19 18:38:26.417 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: GET_ALIGN (null); status: COMPLETED; exit: 0; error: -; workDir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/f8/ca21fae959d9a2f4a07d964333b5a9]
+Jan-19 18:38:26.504 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan-19 18:38:26.573 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-19 18:38:26.574 [Task submitter] INFO  nextflow.Session - [d0/580bcb] Submitted process > GET_INFERENCE (prueba_align.fasta)
+Jan-19 18:38:27.460 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: GET_INFERENCE (prueba_align.fasta); status: COMPLETED; exit: 0; error: -; workDir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/d0/580bcb953ce25bdecf24d43bd0d180]
+Jan-19 18:38:27.487 [main] DEBUG nextflow.Session - Session await > all processes finished
+Jan-19 18:38:27.490 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-19 18:38:27.506 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+Jan-19 18:38:27.515 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=2; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=1.5s; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Jan-19 18:38:27.527 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Jan-19 18:38:27.568 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+Jan-19 18:38:27.568 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

@@ -1,0 +1,1 @@
+['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpegccr0mt', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/param_inference/f007.fasta')]

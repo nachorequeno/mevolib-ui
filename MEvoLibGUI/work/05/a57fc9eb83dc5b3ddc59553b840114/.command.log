@@ -1,0 +1,18 @@
+aaaaaaaaaaaaaaaaaaaaaaaaaaaa ['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpo5snxct2', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/05/a57fc9eb83dc5b3ddc59553b840114/f006.fasta')]
+Traceback (most recent call last):
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/inference/__init__.py", line 163, in get_phylogeny
+    output = subprocess.run(
+  File "/home/sergio/.pyenv/versions/3.10.6/lib/python3.10/subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpo5snxct2', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/05/a57fc9eb83dc5b3ddc59553b840114/f006.fasta')]' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/sergio/.pyenv/versions/3.10.6/envs/mevolib_virt/bin/get_inference", line 8, in <module>
+    sys.exit(main())
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/inference/__init__.py", line 211, in main
+    get_phylogeny(
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/inference/__init__.py", line 168, in get_phylogeny
+    raise RuntimeError(f'Running "{e.cmd}" raised an exception')
+RuntimeError: Running "['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpo5snxct2', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/05/a57fc9eb83dc5b3ddc59553b840114/f006.fasta')]" raised an exception

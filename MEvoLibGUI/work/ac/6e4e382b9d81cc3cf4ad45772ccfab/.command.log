@@ -1,0 +1,4 @@
+Hzlo:  /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/ac/6e4e382b9d81cc3cf4ad45772ccfab/f007.fasta
+Entrau
+['-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpdakw1bqc', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/ac/6e4e382b9d81cc3cf4ad45772ccfab/f007.fasta')]
+bin_name: fasttree, infile_path: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/ac/6e4e382b9d81cc3cf4ad45772ccfab/f007.fasta, bootstraps: 0, tmp_file: None, command:['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpdakw1bqc', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/ac/6e4e382b9d81cc3cf4ad45772ccfab/f007.fasta')]

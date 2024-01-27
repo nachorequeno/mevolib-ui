@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 126, in get_alignment
+    output = subprocess.run(command, stderr=subprocess.DEVNULL, universal_newlines=True, check=True,
+  File "/home/sergio/.pyenv/versions/3.10.6/lib/python3.10/subprocess.py", line 524, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['mafft', '--auto', '--quiet', '--thread', '12', '/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/4f/19cda3ef2232af3ef1525f76769303/prueba.fasta']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/sergio/.pyenv/versions/3.10.6/envs/mevolib_virt/bin/get_align", line 8, in <module>
+    sys.exit(main())
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 151, in main
+    get_alignment(binary=args.tool, infile=args.input, infile_format='fasta', args='default', outfile= f"{filename}_align.fasta", outfile_format='fasta')  
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 129, in get_alignment
+    raise RuntimeError(f'Running "{" ".join(e.cmd)}" raised an exception')
+RuntimeError: Running "mafft --auto --quiet --thread 12 /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/4f/19cda3ef2232af3ef1525f76769303/prueba.fasta" raised an exception

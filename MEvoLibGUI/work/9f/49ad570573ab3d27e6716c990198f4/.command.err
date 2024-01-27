@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/sergio/.pyenv/versions/3.10.6/envs/mevolib_virt/bin/get_align", line 8, in <module>
+    sys.exit(main())
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 151, in main
+    get_alignment(binary=args.tool, infile=args.input, infile_format='fasta', args='default', outfile= f"{filename}_align.fasta", outfile_format='fasta')  
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 131, in get_alignment
+    alignment = AlignIO.read(StringIO(output), 'fasta')
+  File "/home/sergio/.pyenv/versions/mevolib_virt/lib/python3.10/site-packages/Bio/AlignIO/__init__.py", line 385, in read
+    raise ValueError("No records found in handle") from None
+ValueError: No records found in handle

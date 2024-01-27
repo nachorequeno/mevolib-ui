@@ -1,0 +1,93 @@
+Jan-19 18:36:48.581 [main] DEBUG nextflow.cli.Launcher - $> nextflow -Duser.country=US run nextflowFiles/workflows/align_inference/main.nf --unaln_files=/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/align_inference/prueba.fasta
+Jan-19 18:36:48.848 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 22.10.7
+Jan-19 18:36:48.872 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/sergio/.nextflow/plugins; core-plugins: nf-amazon@1.11.4,nf-azure@0.14.2,nf-codecommit@0.1.2,nf-console@1.0.4,nf-ga4gh@1.0.4,nf-google@1.4.5,nf-tower@1.5.6,nf-wave@0.5.4
+Jan-19 18:36:48.888 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jan-19 18:36:48.892 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jan-19 18:36:48.895 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jan-19 18:36:48.920 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jan-19 18:36:48.948 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/nextflow.config
+Jan-19 18:36:48.950 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/nextflow.config
+Jan-19 18:36:48.981 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-19 18:36:49.657 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from config declaration
+Jan-19 18:36:49.678 [main] INFO  nextflow.cli.CmdRun - Launching `nextflowFiles/workflows/align_inference/main.nf` [happy_watson] DSL2 - revision: 73d6a81ec2
+Jan-19 18:36:49.679 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jan-19 18:36:49.679 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Jan-19 18:36:49.691 [main] DEBUG nextflow.secret.LocalSecretsProvider - Secrets store: /home/sergio/.nextflow/secrets/store.json
+Jan-19 18:36:49.695 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@2f1d0bbc] - activable => nextflow.secret.LocalSecretsProvider@2f1d0bbc
+Jan-19 18:36:49.764 [main] DEBUG nextflow.Session - Session UUID: 234e2bef-fe61-41ab-bf7a-8bbe5bbfce2e
+Jan-19 18:36:49.765 [main] DEBUG nextflow.Session - Run name: happy_watson
+Jan-19 18:36:49.766 [main] DEBUG nextflow.Session - Executor pool size: 12
+Jan-19 18:36:49.788 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan-19 18:36:49.828 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 22.10.7 build 5853
+  Created: 18-02-2023 20:32 UTC 
+  System: Linux 5.15.133.1-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.13 on OpenJDK 64-Bit Server VM 11.0.21+9-post-Ubuntu-0ubuntu122.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 100237@DESKTOP-IDERQG7 [127.0.1.1]
+  CPUs: 12 - Mem: 7.7 GB (4.6 GB) - Swap: 2 GB (2 GB)
+Jan-19 18:36:49.884 [main] DEBUG nextflow.Session - Work-dir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work [v9fs]
+Jan-19 18:36:49.889 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/align_inference/bin
+Jan-19 18:36:49.901 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jan-19 18:36:49.915 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-19 18:36:49.947 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jan-19 18:36:49.959 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 13; maxThreads: 1000
+Jan-19 18:36:50.143 [main] DEBUG nextflow.Session - Session start
+Jan-19 18:36:50.351 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-19 18:36:50.666 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-19 18:36:50.667 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-19 18:36:50.672 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-19 18:36:50.676 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=12; memory=7.7 GB; capacity=12; pollInterval=100ms; dumpInterval=5m
+Jan-19 18:36:50.759 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: GET_ALIGN, GET_INFERENCE
+Jan-19 18:36:50.760 [main] DEBUG nextflow.Session - Igniting dataflow network (1)
+Jan-19 18:36:50.760 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > GET_ALIGN
+Jan-19 18:36:50.762 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jan-19 18:36:50.762 [main] DEBUG nextflow.Session - Session await
+Jan-19 18:36:50.919 [Actor Thread 3] DEBUG nextflow.util.CacheHelper - Unable to get file attributes file: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/align_inference/prueba.fasta -- Cause: java.nio.file.NoSuchFileException: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/align_inference/prueba.fasta
+Jan-19 18:36:51.006 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-19 18:36:51.010 [Task submitter] INFO  nextflow.Session - [0f/ccd4e5] Submitted process > GET_ALIGN (null)
+Jan-19 18:36:51.591 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: GET_ALIGN (null); status: COMPLETED; exit: 1; error: -; workDir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/0f/ccd4e5bb1a1691b9bfdcdc3d7bcd33]
+Jan-19 18:36:51.616 [Task monitor] ERROR nextflow.processor.TaskProcessor - Error executing process > 'GET_ALIGN (null)'
+
+Caused by:
+  Process `GET_ALIGN (null)` terminated with an error exit status (1)
+
+Command executed:
+
+  get_align -t mafft -i prueba.fasta -o AlignAndInference
+
+Command exit status:
+  1
+
+Command output:
+  (empty)
+
+Command error:
+  Traceback (most recent call last):
+    File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 126, in get_alignment
+      output = subprocess.run(command, stderr=subprocess.DEVNULL, universal_newlines=True, check=True,
+    File "/home/sergio/.pyenv/versions/3.10.6/lib/python3.10/subprocess.py", line 524, in run
+      raise CalledProcessError(retcode, process.args,
+  subprocess.CalledProcessError: Command '['mafft', '--auto', '--quiet', '--thread', '12', 'prueba.fasta']' returned non-zero exit status 1.
+  
+  During handling of the above exception, another exception occurred:
+  
+  Traceback (most recent call last):
+    File "/home/sergio/.pyenv/versions/3.10.6/envs/mevolib_virt/bin/get_align", line 8, in <module>
+      sys.exit(main())
+    File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 151, in main
+      get_alignment(binary=args.tool, infile=args.input, infile_format='fasta', args='default', outfile= f"{filename}_align.fasta", outfile_format='fasta')  
+    File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/align/__init__.py", line 129, in get_alignment
+      raise RuntimeError(f'Running "{" ".join(e.cmd)}" raised an exception')
+  RuntimeError: Running "mafft --auto --quiet --thread 12 prueba.fasta" raised an exception
+
+Work dir:
+  /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/0f/ccd4e5bb1a1691b9bfdcdc3d7bcd33
+
+Tip: when you have fixed the problem you can continue the execution adding the option `-resume` to the run command line
+Jan-19 18:36:51.627 [main] DEBUG nextflow.Session - Session await > all processes finished
+Jan-19 18:36:51.631 [Task monitor] DEBUG nextflow.Session - Session aborted -- Cause: Process `GET_ALIGN (null)` terminated with an error exit status (1)
+Jan-19 18:36:51.670 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-19 18:36:51.688 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=0; failedCount=1; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=0ms; failedDuration=492ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Jan-19 18:36:51.761 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Jan-19 18:36:51.829 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

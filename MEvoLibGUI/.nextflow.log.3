@@ -1,0 +1,56 @@
+Jan-20 09:06:55.337 [main] DEBUG nextflow.cli.Launcher - $> nextflow -Duser.country=US run nextflowFiles/workflows/inference/main.nf --aln_files=/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/uploads/inference/f007.fasta
+Jan-20 09:06:55.706 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 22.10.7
+Jan-20 09:06:55.762 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/sergio/.nextflow/plugins; core-plugins: nf-amazon@1.11.4,nf-azure@0.14.2,nf-codecommit@0.1.2,nf-console@1.0.4,nf-ga4gh@1.0.4,nf-google@1.4.5,nf-tower@1.5.6,nf-wave@0.5.4
+Jan-20 09:06:55.801 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jan-20 09:06:55.807 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jan-20 09:06:55.814 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jan-20 09:06:55.871 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jan-20 09:06:55.927 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/inference/nextflow.config
+Jan-20 09:06:55.932 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/inference/nextflow.config
+Jan-20 09:06:55.980 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jan-20 09:06:56.778 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from config declaration
+Jan-20 09:06:56.815 [main] INFO  nextflow.cli.CmdRun - Launching `nextflowFiles/workflows/inference/main.nf` [gloomy_leakey] DSL2 - revision: 21f964dd3a
+Jan-20 09:06:56.816 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jan-20 09:06:56.816 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Jan-20 09:06:56.829 [main] DEBUG nextflow.secret.LocalSecretsProvider - Secrets store: /home/sergio/.nextflow/secrets/store.json
+Jan-20 09:06:56.835 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@59072e9d] - activable => nextflow.secret.LocalSecretsProvider@59072e9d
+Jan-20 09:06:56.931 [main] DEBUG nextflow.Session - Session UUID: dad1afc8-468a-42d7-8455-8ed300a9ba95
+Jan-20 09:06:56.932 [main] DEBUG nextflow.Session - Run name: gloomy_leakey
+Jan-20 09:06:56.932 [main] DEBUG nextflow.Session - Executor pool size: 12
+Jan-20 09:06:56.960 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan-20 09:06:57.033 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 22.10.7 build 5853
+  Created: 18-02-2023 20:32 UTC 
+  System: Linux 5.15.133.1-microsoft-standard-WSL2
+  Runtime: Groovy 3.0.13 on OpenJDK 64-Bit Server VM 11.0.21+9-post-Ubuntu-0ubuntu122.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 1787@DESKTOP-IDERQG7 [127.0.1.1]
+  CPUs: 12 - Mem: 7.7 GB (6.1 GB) - Swap: 2 GB (2 GB)
+Jan-20 09:06:57.104 [main] DEBUG nextflow.Session - Work-dir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work [v9fs]
+Jan-20 09:06:57.106 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/nextflowFiles/workflows/inference/bin
+Jan-20 09:06:57.120 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jan-20 09:06:57.138 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jan-20 09:06:57.168 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jan-20 09:06:57.251 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 13; maxThreads: 1000
+Jan-20 09:06:57.796 [main] DEBUG nextflow.Session - Session start
+Jan-20 09:06:58.141 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jan-20 09:06:58.366 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Jan-20 09:06:58.366 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Jan-20 09:06:58.377 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Jan-20 09:06:58.387 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=12; memory=7.7 GB; capacity=12; pollInterval=100ms; dumpInterval=5m
+Jan-20 09:06:58.569 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: GET_INFERENCE
+Jan-20 09:06:58.572 [main] DEBUG nextflow.Session - Igniting dataflow network (1)
+Jan-20 09:06:58.573 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > GET_INFERENCE
+Jan-20 09:06:58.574 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Jan-20 09:06:58.575 [main] DEBUG nextflow.Session - Session await
+Jan-20 09:06:58.980 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jan-20 09:06:58.988 [Task submitter] INFO  nextflow.Session - [ed/bfd959] Submitted process > GET_INFERENCE (f007.fasta)
+Jan-20 09:07:05.847 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: GET_INFERENCE (f007.fasta); status: COMPLETED; exit: 0; error: -; workDir: /mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/ed/bfd9599cecda183e0c07a2df725e34]
+Jan-20 09:07:05.910 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=36; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Jan-20 09:07:05.921 [main] DEBUG nextflow.Session - Session await > all processes finished
+Jan-20 09:07:05.924 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Jan-20 09:07:05.951 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+Jan-20 09:07:05.975 [main] DEBUG nextflow.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=1; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=6.8s; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=1; peakMemory=0; ]
+Jan-20 09:07:06.033 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Jan-20 09:07:06.068 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+Jan-20 09:07:06.069 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

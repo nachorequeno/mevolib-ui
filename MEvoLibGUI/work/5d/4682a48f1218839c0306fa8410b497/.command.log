@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/sergio/.pyenv/versions/3.10.6/envs/mevolib_virt/bin/get_inference", line 8, in <module>
+    sys.exit(main())
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/inference/__init__.py", line 211, in main
+    get_phylogeny(
+  File "/mnt/c/Users/sermo/tfg/MEvoLib/mevolib/inference/__init__.py", line 136, in get_phylogeny
+    raise ValueError(
+ValueError: The phylogenetic inference tool "null" isn't included in MEvoLib.Inference
