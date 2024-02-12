@@ -15,6 +15,7 @@ from .formats import (
     INFERENCE_TOOLS_LIST as inference_tools,
     INFERENCE_FORMAT_STR as inference_input_accepted,
     VALID_INPUT_FILES as accepted_mimetypes,
+    VALID_CONVERSION_FILES as allowed_conversions
 )
 
 from .models import (
@@ -32,6 +33,7 @@ def home(request):
     al_inf_form = AlignInfForm(request.POST)
     param_form = ParamInferenceForm(request.POST)
 
+    print(allowed_conversions)
     return render(
         request,
         "nextflowApp/home.html",
@@ -42,6 +44,7 @@ def home(request):
             "align_tools": align_tools,
             "inference_tools": inference_tools,
             "inference_input_accepted": inference_input_accepted,
+            "accepted_mimetypes": accepted_mimetypes
         },
     )
 
@@ -180,16 +183,23 @@ def full_workflow(request):
         if request.FILES:   # If fetch stage has not been selected, one of the others will have an input file to develop the
                             # workflow from, so it must be saved and it's path added to the query.
             
-            if request.FILES.get("cluster_input", False):   # If the submitted form has a cluster file input,it's mimetype must be checked before
-                                                            # saving it or starting the workflow.
+            if request.FILES.get("cluster_input", False):   # If the submitted form has a cluster file input,it's input and 
+                                                            # output mimetype must be checked before saving it or starting the workflow.
+    
+                file_name = request.FILES["cluster_input"].name                                             
+                input_file_format = request.POST['cluster_input_format']
+                output_file_format = "fasta"
                 
-                file_name = request.FILES["cluster_input"].name
-                file_extension = file_name.split(".")[-1]
+                if request.POST["cluster_output_format"]:
+                    output_file_format = request.POST["cluster_output_format"]
 
-                if file_extension not in accepted_mimetypes:
-                    return JsonResponse(    # If the mimetype is not supported, the client is notified with a message and the response emits
-                                            # a status 400, that means an error has occured during the user's request.
-                        {"cluster_file_err": f"The extension '.{file_extension}' cannot be used to perform a clustering stage on the workflow."},
+                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
+                    return JsonResponse(    # The reason behind this check is that MEvoLib can make conversions between certain file
+                                            # types if the input file is not supported, so given that ".fasta" is the most common, if
+                                            # it's input is not ".fasta" and it cannot be converted, the user must be prevented to
+                                            # avoid launching a workflow that can lead to error.
+                                            
+                        {"cluster_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
                         status=400,
                     )
 
@@ -199,33 +209,37 @@ def full_workflow(request):
                     stage = "cluster"
 
             elif request.FILES.get("align_input", False):       # The same validation logic applies with alignment files...
+                
                 file_name = request.FILES["align_input"].name
-                file_extension = file_name.split(".")[-1]
+                input_file_format = request.POST['align_input_format']
+                output_file_format = "fasta"
+                
+                if request.POST["align_output_format"]:
+                    output_file_format = request.POST["align_output_format"]
 
-                if file_extension not in accepted_mimetypes:
-                    return JsonResponse(
-                        {
-                            "align_file_err": f"The extension '.{file_extension}' cannot be used to perform an alignment stage on the workflow."
-                        },
+                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
+                    return JsonResponse(    
+                        {"align_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
                         status=400,
                     )
 
                 else:
-                    input_file = FullWorkflowDocument(
-                        docfile=request.FILES["align_input"]
-                    )
+                    input_file = FullWorkflowDocument(docfile=request.FILES["align_input"])
                     input_file.save()
                     stage = "align"
 
             elif request.FILES.get("inference_input", False):   # ... and with inference ones.
+                
                 file_name = request.FILES["inference_input"].name
-                file_extension = file_name.split(".")[-1]
+                input_file_format = request.POST['inference_input_format']
+                output_file_format = "newick"
+                
+                if request.POST["inference_output_format"]:
+                    output_file_format = request.POST["inference_output_format"]
 
-                if file_extension not in accepted_mimetypes:
-                    return JsonResponse(
-                        {
-                            "inference_file_err": f"The extension '.{file_extension}' cannot be used to perform am inference stage on the workflow."
-                        },
+                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
+                    return JsonResponse(   
+                        {"inference_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
                         status=400,
                     )
 
@@ -238,16 +252,16 @@ def full_workflow(request):
 
     query_file = ""
 
-    if input_file:  # In case thw form worn a valid file that is already saved, it's reference stage must ne checked to 
-                    # add it to the query as a parameter.
+    if input_file:  # In case the form worn a valid file that is already saved, it's reference stage must ne checked to 
+                    # add it to the query as a parameter; alongside it's input file format.
         file_path = Path(ur).joinpath("full_workflow", file_name).absolute()
 
         if stage == "cluster":
-            query_file = "-ci"
+            query_file = f"-cif {request.POST['cluster_input_format']} -ci"
         elif stage == "align":
-            query_file = "-ai"
+            query_file = f"-aif {request.POST['align_input_format']} -ai"
         elif stage == "inference":
-            query_file = "-ii"
+            query_file = f"-iif {request.POST['inference_input_format']} -ii"
 
         query_file += f" {file_path}"
 
@@ -279,49 +293,45 @@ def buildFullQuery(request, query_file):    # Function to construct the whole wo
             if req["fetch_ref_seq"]:
                 fetch_query += f" AND {req['fetch_ref_seq']}[filter]"
 
-        fetch_query += f" -fo {req['fetch_output_name']}"   # Also, the output file name has to be present.
+        fetch_query += f" -fo {req['fetch_output_name']} "   # Also, the output file name has to be present.
 
         total_query += fetch_query
 
     if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected
         cluster_query = ""
 
-        if req["cluster_input_format"]: # In this case, the input file format is optional.
-            cluster_query += f" -cif {req['cluster_input_format']}"
-
-        cluster_query += f" -co {req['cluster_output']}"    # However, the output file name is needed (as
+        cluster_query += f" -co {req['cluster_output']} "    # However, the output file name is needed (as
                                                             # in every single selected module).
 
         total_query += cluster_query
 
-    if "add_align" in req and req["add_align"] == "on":  # Align stage selected
-        align_query = ""
-
-        align_query += f" -at {req['align_tool']}"   # In this stage, both, the alignment tool and the
+    if "add_align" in req and req["add_align"] == "on":  
+                                                     # Align stage selected
+                                                     # In this stage, both, the alignment tool and the
                                                      # output file name are required.
-
-        align_query += f" -ao {req['align_output']}"
+                                                     
+        align_query = f" -ao {req['align_output']} -at {req['align_tool']} "
 
         total_query += align_query
 
     if "add_inference" in req and req["add_inference"] == "on":  # Inference stage selected
         inference_query = ""
 
-        if req["inference_input_format"]:   # The inference module may have plenty of non-required arguments,
-                                            # such as the input/output file format or the arguments.
-            inference_query += f" -iif {req['inference_input_format']}"
-
+                                            # The inference module may have plenty of non-required arguments,
+                                            # such as the output file format or the arguments.
         if req["inference_output_format"]:
             inference_query += f" -iof {req['inference_output_format']}"
 
         if req["inference_arguments"]:
             inference_query += f" -ia {req['inference_arguments']}"
-            
+        
         # However, the inference tool, the output file name and the bootstraps must be specified.
         inference_query += f" -it {req['inference_tool']} -io {req['inference_output']} -ib {req['inference_bootstraps']} "
 
         total_query += inference_query
 
     total_query += query_file
+    
+    print(total_query)
 
     return total_query

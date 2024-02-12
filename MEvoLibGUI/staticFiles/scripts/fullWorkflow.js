@@ -23,14 +23,22 @@ $("#add_fetch").on('change', function(event){
                                     that could have beem selected are hidden is cleared; alongside with its label.*/
                   
         $(".input_file").each(function(){   /* All the Cluster, Align and Inference file inputs are hidden alongside 
-                                               their labels, as there is no point on showing them if the Fetch stage 
-                                               will already provide the required files */
+                                               their labels and file format, as there is no point on showing them if
+                                               the Fetch stage will already provide the required files */
             $(this).hide();
         })           
         
         $(".input_file_label").each(function(){
             $(this).hide();
         })   
+
+        $(".input_file_format").each(function(){
+            $(this).hide();
+        })  
+
+        $(".input_file_format_label").each(function(){
+            $(this).hide();
+        })  
             
         
     }
@@ -127,6 +135,9 @@ $("#add_align").on('change', function(event){
         if(!$("#align_input").hasClass("selected_input")){
             $("#align_input").hide();    
             $("label[for='"+$("#align_input").attr("id")+"']").hide(); 
+
+            $("label[for='"+$("#align_input").attr("id")+"_format']").hide(); 
+            $("select[id='"+$("#align_input").attr("id")+"_format']").hide(); 
         }
 
     }
@@ -161,6 +172,8 @@ $("#add_inference").on('change', function(event){
         if(!$("#inference_input").hasClass("selected_input")){
             $("#inference_input").hide();    
             $("label[for='"+$("#inference_input").attr("id")+"']").hide(); 
+            $("label[for='"+$("#inference_input").attr("id")+"_format']").hide(); 
+            $("select[id='"+$("#inference_input").attr("id")+"_format']").hide(); 
         }
     }
 
@@ -193,6 +206,7 @@ $("#full_wf_form").on("submit", function(event){
     } else if ($("#inference_input")[0].files.length === 1) {
         formData.append("inference_input", $("#inference_input")[0].files[0]);
     }
+    console.log(formData)
 
     if(validate()){     /* If the submission is valid, the AJAX call is made to asynchronously make server side's data
                            validation, by sending the previously compound data and evaluating the response given. */
@@ -245,6 +259,8 @@ function hideSelectedInput(){   /* If any stage (that is not fetch) had been sel
     $(".selected_input").each(function(){                   
         $(this).removeClass("selected_input").prop("required",false).val("").hide();    
         $("label[for='"+this.id+"']").hide(); 
+        $("label[for='"+this.id+"_format']").hide(); 
+        $("select[id='"+this.id+"_format']").hide(); 
     })
 }
 
@@ -287,10 +303,12 @@ function showSelectedInput(){   /* If any stage (that is not fetch) had been sel
             selected=$("#inference_input")
         }
         
-                        // If there is a selected file, it is made visible (alongside with its label) and required.
+                        // If there is a selected file, it is made visible (alongside with its label and file format) and required.
         if(selected){
             $(selected).addClass("selected_input").prop("required",true).show();  
             $("label[for='"+$(selected).attr("id")+"']").show(); 
+            $("label[for='"+$(selected).attr("id")+"_format']").show(); 
+            $("select[id='"+$(selected).attr("id")+"_format']").show(); 
         }
     }
 }
@@ -307,9 +325,26 @@ function hideErrors(){      // Both, server and client side errors, are hidden.
 function validateSelectFields(){    /* Client side validation to ensure the user chooses an alignment/
                                        inference tool. */
 
+
+                                       
+    if($("#add_cluster").prop("checked")){
+
+        if($("#cluster_input_format").val()===""){
+
+            $("#cluster_input_format_err").text("Please, select a valid input file format.").show();
+            return false;
+        }
+    }
+
     if($("#add_align").prop("checked")){
 
-        if($("#align_tool").val()===""){
+        if($("#align_input_format").val()===""){
+
+            $("#align_input_format_err").text("Please, select a valid input file format.").show();
+            return false;
+        }
+
+        else if($("#align_tool").val()===""){
 
             $("#align_tool_err").text("Please, select a valid alignment tool.").show();
             return false;
@@ -318,7 +353,13 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_inference").prop("checked")){
 
-        if($("#inference_tool").val()===""){
+        if($("#inference_input_format").val()===""){
+
+            $("#inference_input_format_err").text("Please, select a valid input file format.").show();
+            return false;
+        }
+
+        else if($("#inference_tool").val()===""){
             $("#inference_tool_err").text("Please, select a valid inference tool.").show();
             return false;
         }

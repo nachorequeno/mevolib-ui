@@ -83,11 +83,11 @@
                     <h2>Parametrized inference</h2>
                     <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
                 </div>
-       
+
                 <div class="modal-body">
                     <form id="param_inf_form" action="/parametrized_inference/" method="POST" placeholder=""
                         enctype="multipart/form-data">
-                        
+
                         {% csrf_token %}
                         {{param_form.as_p}}
 
@@ -148,7 +148,7 @@
 
                         </div>
 
-                         <!-- Execute the fetch stage or not. -->
+                        <!-- Execute the fetch stage or not. -->
                         <div id="check_fetch" class="form-check">
                             <label id="fetch_label" class="form-check-label text-secondary form_label"
                                 for="add_fetch">Fetch</label>
@@ -258,7 +258,7 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Cluster input sequences file, that will only be needed if the fetch stage has not been selected. -->                                
+                                <!-- Cluster input sequences file, that will only be needed if the fetch stage has not been selected. -->
                                 <label class="col-form-label input_file_label" for="cluster_input">Input sequences file
                                     (<b>*</b>):</label>
 
@@ -267,13 +267,30 @@
                                         id="cluster_input">
                                 </div>
 
-                                <span id="cluster_file_err" class="server_side_err text-danger my-2"></span>
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster input file format. -->
+                                <label class="col-form-label input_file_format_label" for="cluster_input_format">Input file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="cluster_input_format" id="cluster_input_format" class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="cluster_input_format_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Cluster output file name. -->                                    
+                                <!-- Cluster output file name. -->
                                 <label class="col-form-label" for="cluster_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
@@ -283,21 +300,22 @@
                                 </div>
 
 
-                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->                                  
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
                                 <span id="cluster_output_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
-
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Cluster input file format. -->                                    
-                                <label class="col-form-label" for="cluster_input_format">Input file format:</label>
+                                <!-- Inference's output file format. -->
+                                <label class="col-form-label" for="cluster_output_format">File output format:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="cluster_input_format"
-                                        id="cluster_input_format" placeholder="By default, 'genbank'">
+                                    <input class="form-control" type="text" name="cluster_output_format"
+                                        id="cluster_output_format" placeholder="By default, 'fasta'">
                                 </div>
+
+                                <span id="cluster_file_err" class="server_side_err text-danger my-2"></span>
 
                             </div>
 
@@ -316,10 +334,10 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Alignment tool's selection. -->    
+                                <!-- Alignment tool's selection. -->
                                 <label class="col-form-label" for="align_tool">Alignment tool (<b>*</b>):</label>
 
-                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->                                    
+                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="align_tool" id="align_tool">
                                         <option value="">Select an option</option>
@@ -329,14 +347,14 @@
                                     </select>
                                 </div>
 
-                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->  
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
                                 <span id="align_tool_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Unaligned DNA sequences input file. -->    
+                                <!-- Unaligned DNA sequences input file. -->
                                 <label class="col-form-label input_file_label" for="align_input">Input FASTA sequences
                                     file (<b>*</b>):</label>
 
@@ -345,13 +363,30 @@
                                         id="align_input">
                                 </div>
 
-                                <span id="align_file_err" class="server_side_err text-danger my-2"></span>
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster input file format. -->
+                                <label class="col-form-label input_file_format_label" for="align_input_format">Input file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="align_input_format" id="align_input_format" class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="align_input_format_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Alignment output file name. -->                                    
+                                <!-- Alignment output file name. -->
                                 <label class="col-form-label" for="align_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
@@ -360,15 +395,29 @@
                                         id="align_output">
                                 </div>
 
-                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->      
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
                                 <span id="align_output_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's output file format. -->
+                                <label class="col-form-label" for="align_output_format">File output format:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control" type="text" name="align_output_format"
+                                        id="align_output_format" placeholder="By default, 'fasta'">
+                                </div>
+
+                                <span id="align_file_err" class="server_side_err text-danger my-2"></span>
 
                             </div>
 
                         </div>
 
 
-                        <!-- Execute the inference stage or not. -->                      
+                        <!-- Execute the inference stage or not. -->
                         <div id="check_inference" class="form-check">
                             <label id="inference_label" class="form-check-label text-secondary form_label"
                                 for="add_inference">Inference</label>
@@ -380,10 +429,10 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's tool selection. -->                                    
+                                <!-- Inference's tool selection. -->
                                 <label class="col-form-label" for="inference_tool">Inference tool (<b>*</b>):</label>
 
-                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->                                  
+                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="inference_tool" id="inference_tool">
                                         <option value="">Select an option</option>
@@ -399,7 +448,7 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- DNA aligned sequences file. -->                                  
+                                <!-- DNA aligned sequences file. -->
                                 <label class="col-form-label input_file_label" for="inference_input">Input aligned
                                     sequences file (<b>*</b>):</label>
 
@@ -408,13 +457,29 @@
                                         accept="{{inference_input_accepted}}" id="inference_input">
                                 </div>
 
-                                <span id="inference_file_err" class="server_side_err text-danger my-2"></span>
-
                             </div>
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's output file name. -->                                  
+                                <!-- Inference's input file format. -->
+                                <label class="col-form-label input_file_format_label" for="inference_input_format">Input file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="inference_input_format" id="inference_input_format" class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="inference_input_format_err" class="client_side_err text-danger my-2"></span>
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's output file name. -->
                                 <label class="col-form-label" for="inference_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
@@ -423,39 +488,30 @@
                                         id="inference_output">
                                 </div>
 
-                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->                                      
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
                                 <span id="inference_output_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
-                            <div class="offset-1 my-2 form-group">
-
-                                <!-- Inference's input file format. -->                                  
-                                <label class="col-form-label" for="inference_input_format">File input format:</label>
-
-                                <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="inference_input_format"
-                                        id="inference_input_format" placeholder="By default, 'Fasta'">
-                                </div>
-
-                            </div>
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's output file format. -->                                   
+                                <!-- Inference's output file format. -->
                                 <label class="col-form-label" for="inference_output_format">File output format:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <input class="form-control" type="text" name="inference_output_format"
-                                        id="inference_output_format" placeholder="By default, 'Newick'">
+                                        id="inference_output_format" placeholder="By default, 'newick'">
                                 </div>
+
+                                <span id="inference_file_err" class="server_side_err text-danger my-2"></span>
 
                             </div>
 
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's bootstraps. -->                                   
+                                <!-- Inference's bootstraps. -->
                                 <label class="col-form-label" for="inference_bootstraps">Bootstraps:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
@@ -468,7 +524,7 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's arguments. -->                                       
+                                <!-- Inference's arguments. -->
                                 <label class="col-form-label" for="inference_arguments">Arguments:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
@@ -481,7 +537,7 @@
                         </div>
 
                 </div>
-                <!-- Reset and submit buttons. -->                       
+                <!-- Reset and submit buttons. -->
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-primary">Reset</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -491,7 +547,7 @@
         </div>
     </div>
 
-    <!-- Modal that will inform the user if they execute the full workflow and there are no errors. -->           
+    <!-- Modal that will inform the user if they execute the full workflow and there are no errors. -->
     <div id="full_wf_successful_modal" class="modal top fade" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content successful_modal">
