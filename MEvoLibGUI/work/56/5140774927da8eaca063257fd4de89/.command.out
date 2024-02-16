@@ -1,1 +1,0 @@
-['fasttree', '-gtr', '-nt', '-nopr', '-quiet', '-log', '/tmp/tmpdwtlfmei', PosixPath('/mnt/c/Users/sermo/DjangoTFG/pruebaNextflow/work/56/5140774927da8eaca063257fd4de89/prueba_align.fasta')]
