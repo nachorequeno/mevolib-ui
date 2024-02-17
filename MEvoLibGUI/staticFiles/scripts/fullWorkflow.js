@@ -206,7 +206,6 @@ $("#full_wf_form").on("submit", function(event){
     } else if ($("#inference_input")[0].files.length === 1) {
         formData.append("inference_input", $("#inference_input")[0].files[0]);
     }
-    console.log(formData)
 
     if(validate()){     /* If the submission is valid, the AJAX call is made to asynchronously make server side's data
                            validation, by sending the previously compound data and evaluating the response given. */
@@ -329,7 +328,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
                                        
     if($("#add_cluster").prop("checked")){
 
-        if($("#cluster_input_format").val()===""){
+        if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){
 
             $("#cluster_input_format_err").text("Please, select a valid input file format.").show();
             return false;
@@ -338,7 +337,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_align").prop("checked")){
 
-        if($("#align_input_format").val()===""){
+        if($("#align_input").hasClass("selected_input") && $("#align_input_format").val()===""){
 
             $("#align_input_format_err").text("Please, select a valid input file format.").show();
             return false;
@@ -353,7 +352,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_inference").prop("checked")){
 
-        if($("#inference_input_format").val()===""){
+        if($("#inference_input").hasClass("selected_input") && $("#inference_input_format").val()===""){
 
             $("#inference_input_format_err").text("Please, select a valid input file format.").show();
             return false;

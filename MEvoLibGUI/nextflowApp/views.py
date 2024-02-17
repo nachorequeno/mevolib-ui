@@ -33,7 +33,6 @@ def home(request):
     al_inf_form = AlignInfForm(request.POST)
     param_form = ParamInferenceForm(request.POST)
 
-    print(allowed_conversions)
     return render(
         request,
         "nextflowApp/home.html",
@@ -257,23 +256,25 @@ def full_workflow(request):
         file_path = Path(ur).joinpath("full_workflow", file_name).absolute()
 
         if stage == "cluster":
-            query_file = f"-cif {request.POST['cluster_input_format']} -ci"
+            query_file = f" -cif {request.POST['cluster_input_format']} -ci"
         elif stage == "align":
-            query_file = f"-aif {request.POST['align_input_format']} -ai"
+            query_file = f" -aif {request.POST['align_input_format']} -ai"
         elif stage == "inference":
-            query_file = f"-iif {request.POST['inference_input_format']} -ii"
+            query_file = f" -iif {request.POST['inference_input_format']} -ii"
 
         query_file += f" {file_path}"
 
-    buildFullQuery(request, query_file)
+    full_query = buildFullQuery(request, query_file, stage)
+    
+    print(full_query)
 
     return JsonResponse({}, status=200) # If there are no errors, the client side receives a JSON (empty, because it does not need any
                                         # further information) and a status 200, that means the request was successful.
 
 
-def buildFullQuery(request, query_file):    # Function to construct the whole workflow query based on the data 
+def buildFullQuery(request, query_file, stage):    # Function to construct the whole workflow query based on the data 
                                             # submitted in the form.
-    total_query = ""
+    total_query = {}
     req = request.POST
 
     if "add_fetch" in req and req["add_fetch"] == "on":  # Fetch stage selected.
@@ -293,26 +294,38 @@ def buildFullQuery(request, query_file):    # Function to construct the whole wo
             if req["fetch_ref_seq"]:
                 fetch_query += f" AND {req['fetch_ref_seq']}[filter]"
 
-        fetch_query += f" -fo {req['fetch_output_name']} "   # Also, the output file name has to be present.
+        fetch_query += f" -fo {req['fetch_output_name']}"   # Also, the output file name has to be present.
 
-        total_query += fetch_query
+        total_query["fetch_query"] = fetch_query
 
     if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected
         cluster_query = ""
 
-        cluster_query += f" -co {req['cluster_output']} "    # However, the output file name is needed (as
+        cluster_query += f"-co {req['cluster_output']}"    # However, the output file name is needed (as
                                                             # in every single selected module).
 
-        total_query += cluster_query
+        if req["cluster_output_format"]:
+            cluster_query += f" -cof {req['cluster_output_format']}"
+            
+        if stage == "cluster":
+            cluster_query += query_file
+            
+        total_query["cluster_query"] = cluster_query
 
     if "add_align" in req and req["add_align"] == "on":  
                                                      # Align stage selected
                                                      # In this stage, both, the alignment tool and the
                                                      # output file name are required.
                                                      
-        align_query = f" -ao {req['align_output']} -at {req['align_tool']} "
+        align_query = f"-ao {req['align_output']} -at {req['align_tool']}"
+        
+        if req["align_output_format"]:
+            align_query += f" -aof {req['align_output_format']}"
 
-        total_query += align_query
+        if stage == "align":
+            align_query += query_file
+            
+        total_query["align_query"] = align_query    
 
     if "add_inference" in req and req["add_inference"] == "on":  # Inference stage selected
         inference_query = ""
@@ -320,18 +333,17 @@ def buildFullQuery(request, query_file):    # Function to construct the whole wo
                                             # The inference module may have plenty of non-required arguments,
                                             # such as the output file format or the arguments.
         if req["inference_output_format"]:
-            inference_query += f" -iof {req['inference_output_format']}"
+            inference_query += f"-iof {req['inference_output_format']} "
 
         if req["inference_arguments"]:
-            inference_query += f" -ia {req['inference_arguments']}"
+            inference_query += f"-ia {req['inference_arguments']} "
         
         # However, the inference tool, the output file name and the bootstraps must be specified.
-        inference_query += f" -it {req['inference_tool']} -io {req['inference_output']} -ib {req['inference_bootstraps']} "
+        inference_query += f"-it {req['inference_tool']} -io {req['inference_output']} -ib {req['inference_bootstraps']}"
 
-        total_query += inference_query
-
-    total_query += query_file
-    
-    print(total_query)
+        if stage == "inference":
+            inference_query += query_file
+            
+        total_query["inference_query"] = inference_query     
 
     return total_query
