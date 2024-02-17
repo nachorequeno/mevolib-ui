@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Berlin"
 
 USE_I18N = True
 
@@ -122,7 +122,8 @@ NEXTFLOW_REPORTS_DIR_ROOT = "nextflowFiles/reports"
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [Path(BASE_DIR).joinpath("staticFiles")]
+STATIC_ROOT = Path(BASE_DIR) / "static"
+STATICFILES_DIRS = [Path(BASE_DIR) / "staticFiles"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
