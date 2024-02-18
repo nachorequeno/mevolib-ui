@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).parents[1]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = "django-insecure-&h=kw#*d*@zf+dr%knpgx6b*hxys$m5@1pw)cfxm028^(*1$-3
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -71,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "MEvoLibGUI.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -81,7 +79,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -101,13 +98,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Berlin"
 
 USE_I18N = True
 
@@ -122,7 +118,8 @@ NEXTFLOW_REPORTS_DIR_ROOT = "nextflowFiles/reports"
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [Path(BASE_DIR).joinpath("staticFiles")]
+STATIC_ROOT = Path(BASE_DIR) / "static"
+STATICFILES_DIRS = [Path(BASE_DIR) / "staticFiles"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
