@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).parents[1]
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).parents[1]
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-&h=kw#*d*@zf+dr%knpgx6b*hxys$m5@1pw)cfxm028^(*1$-3"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,8 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "nextflowApp",
-    "nextflow",
-    "widget_tweaks",
+    "celery"
 ]
 
 MIDDLEWARE = [
@@ -120,6 +122,12 @@ NEXTFLOW_REPORTS_DIR_ROOT = "nextflowFiles/reports"
 STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR) / "static"
 STATICFILES_DIRS = [Path(BASE_DIR) / "staticFiles"]
+
+WORKFLOW_OUTPUT = "output/"
+
+# Celery options
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
