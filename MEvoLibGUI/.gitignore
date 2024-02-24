@@ -7,3 +7,9 @@ __pycache__/
 .nextflow*
 work/
 trace-*.txt
+.env
+MEvoLib/
+nextflowFiles/uploads
+output/
+stderr.txt
+stdout.txt

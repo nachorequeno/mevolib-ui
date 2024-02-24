@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from pathlib import Path
-import nextflow
+from celery.result import AsyncResult
+import io, nextflow, random, zipfile
+import random
 
-
+from MEvoLibGUI.tasks import run_workflow
 from MEvoLibGUI.settings import (
     NEXTFLOW_PIPELINE_ROOT as pr,
     NEXTFLOW_DATA_ROOT as dr,
     NEXTFLOW_UPLOADS_ROOT as ur,
+    WORKFLOW_OUTPUT
 )
 from MEvoLibGUI.forms import AlignForm, ParamInferenceForm, AlignInfForm
 from .formats import (
@@ -25,10 +28,9 @@ from .models import (
     FullWorkflowDocument,
 )
 
-DEFAULT_INFERENCE_INPUT = ".fasta"
-
 
 def home(request):
+    
     al_form = AlignForm(request.POST)
     al_inf_form = AlignInfForm(request.POST)
     param_form = ParamInferenceForm(request.POST)
@@ -149,10 +151,9 @@ def align_and_inference(request):
         al_inf_form = AlignInfForm(request.POST, request.FILES)
 
         if al_inf_form.is_valid():
-            if request.FILES["unaligned_file"]:
+            if request.FILES["unaligned_file"]: # If the form is valid and there is a file on it, it is saved and it's path got.
                 
                 file_name = request.FILES["unaligned_file"].name
-                file_extension = file_name.split(".")[-1]
 
                 unaligned_file = AlignInferenceDocument(
                     docfile=request.FILES["unaligned_file"]
@@ -162,14 +163,14 @@ def align_and_inference(request):
                 unaln_file_path = (
                     Path(ur).joinpath("align_inference", file_name).absolute()
                 )
+                
+                task_hash = str(random.getrandbits(32))     # A hash to provide a folder name concurrently to the task.
+                
+                params={"unaln_files": str(unaln_file_path), "output_name": task_hash}
+                task = run_workflow.delay(str(workflow_path), params)   # After loading all the parameters, a celery task, which
+                                                                        # will run the Nextflow workflow asynchronously, is called.
 
-                execution = nextflow.run(
-                    workflow_path, params={"unaln_files": str(unaln_file_path)}
-                )
-
-        processed_output = execution.stdout
-
-    return HttpResponse(f"Execution's result: {processed_output}")
+                return JsonResponse({"task_id": task.id, "task_hash": task_hash}, status=200)
 
 
 def full_workflow(request):
@@ -265,12 +266,42 @@ def full_workflow(request):
         query_file += f" {file_path}"
 
     full_query = buildFullQuery(request, query_file, stage)
-    
-    print(full_query)
 
     return JsonResponse({}, status=200) # If there are no errors, the client side receives a JSON (empty, because it does not need any
                                         # further information) and a status 200, that means the request was successful.
 
+def check_task_status(request):             # This function provides the client a way to know the status of their task, if requested any.
+    task_id = request.GET.get("task_id")
+    
+    if task_id:
+        # Check the status of the Celery task
+        task = AsyncResult(task_id)
+        return JsonResponse({'task_status': task.status}, status=200)
+    else:
+        return JsonResponse({'error': 'Task ID not provided'}, status=400)
+
+def download_task_zip(request):    
+
+    folder_path = Path(WORKFLOW_OUTPUT).joinpath(request.GET.get("task_hash")).absolute()
+
+    zip_buffer = io.BytesIO() # Fisrt, a zip buffer is created to allocate the following zip contents.
+
+    
+    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file: # Next, a ZipFile object is created, to store that
+                                                                             # information in memory
+
+        for entry in folder_path.rglob("*"):   # It iterates through all the files/subdirectories within the specified folder and
+                                               # adds them to the zip file.
+            zip_file.write(entry, entry.relative_to(folder_path))
+
+
+    zip_buffer.seek(0)      # The position of the buffer's file pointer is resetted to point to the start.
+
+    response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip', status=200) # The zip response is prepared and
+                                                                                               # given to the user. 
+    response['Content-Disposition'] = 'attachment; filename="folder_download.zip"'
+
+    return response
 
 def buildFullQuery(request, query_file, stage):    # Function to construct the whole workflow query based on the data 
                                             # submitted in the form.

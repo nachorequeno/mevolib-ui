@@ -1,7 +1,7 @@
 
 process GET_INFERENCE {
     tag "$alignment"
-    publishDir "./output/inference/${params.output_name}", mode: 'copy', overwrite: false
+    publishDir "./output/${params.output_name}/inference", mode: 'copy', overwrite: false
     
     input:
         path alignment

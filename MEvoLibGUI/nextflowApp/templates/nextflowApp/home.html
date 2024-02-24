@@ -1,5 +1,4 @@
 {% load static %}
-{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -272,11 +271,13 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Cluster input file format. -->
-                                <label class="col-form-label input_file_format_label" for="cluster_input_format">Input file format (<b>*</b>):</label>
+                                <label class="col-form-label input_file_format_label" for="cluster_input_format">Input
+                                    file format (<b>*</b>):</label>
 
                                 <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <select name="cluster_input_format" id="cluster_input_format" class="input_file_format">
+                                    <select name="cluster_input_format" id="cluster_input_format"
+                                        class="input_file_format">
                                         <option value="">Select an option</option>
                                         {% for format in accepted_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
@@ -368,7 +369,8 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Cluster input file format. -->
-                                <label class="col-form-label input_file_format_label" for="align_input_format">Input file format (<b>*</b>):</label>
+                                <label class="col-form-label input_file_format_label" for="align_input_format">Input
+                                    file format (<b>*</b>):</label>
 
                                 <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
                                 <div class="col-md-8 col-sm-10 col-12">
@@ -462,11 +464,13 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Inference's input file format. -->
-                                <label class="col-form-label input_file_format_label" for="inference_input_format">Input file format (<b>*</b>):</label>
+                                <label class="col-form-label input_file_format_label" for="inference_input_format">Input
+                                    file format (<b>*</b>):</label>
 
                                 <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <select name="inference_input_format" id="inference_input_format" class="input_file_format">
+                                    <select name="inference_input_format" id="inference_input_format"
+                                        class="input_file_format">
                                         <option value="">Select an option</option>
                                         {% for format in accepted_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
@@ -561,8 +565,40 @@
 
             </div>
         </div>
+    </div>
+
+    <div id="align_inference_successful_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content successful_modal">
+
+                <div class="modal-body">
+                    <h2 class="text-center">Your workflow has been submitted, wait until it has finished (it could take some time).</h2>
+                </div>
+
+                <img src="{% static 'images/dancingChromo.gif' %}" alt="">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="align_inference_finished_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content successful_modal">
+
+                <div class="modal-header">
+                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h2 class="text-center">Your task has finished, and the files have been dropped to your Downloads menu. <br> Thanks for using MEvoLib!</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 <script src="{% static '/scripts/fullWorkflow.js' %}"></script>
+<script src="{% static '/scripts/alignAndInferenceCelery.js' %}"></script>
 
 </html>

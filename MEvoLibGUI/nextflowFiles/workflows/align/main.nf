@@ -1,7 +1,7 @@
 
 process GET_ALIGN {
     tag "$alignment"
-    publishDir "./output/inference/${params.output_name}", mode: 'copy', overwrite: false
+    publishDir "./output/${params.output_name}/align", mode: 'copy', overwrite: false
     
     input:
         path unaligned_files

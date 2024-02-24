@@ -218,7 +218,7 @@ $("#full_wf_form").on("submit", function(event){
                 'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()   // Needed CSRF token, to avoid session hijack attacks.
             },
             data: formData,
-            dataType:"json",
+            dataType:"application/json",
             success: function(response){    // If all goes fine, the form workflow is hidden and a message informing the user is shown.
                 $("#full_wf_modal").modal("hide")
                 $("#full_wf_successful_modal").modal("show")
