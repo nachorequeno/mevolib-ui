@@ -88,7 +88,7 @@ function download_task_zip(task_hash){  // An AJAX call makes the server to send
             $("#align_inference_finished_modal").modal("show")
 
             // A zip link is generated and clicked in the background, so that user does not need to click on it.
-            var link = document.createElement('zipDownload');
+            var link = document.createElement('a');
             link.href = window.URL.createObjectURL(response)
             link.download = 'processOutput.zip';    // Naming is still under development, this is only a prototype.
             document.body.appendChild(link);

@@ -7,6 +7,3 @@ def run_workflow(workflow_path, parameters):
     doing other tasks."""
     
     nextflow.run(workflow_path, params = parameters)
-    
-    #papa="/mnt/c/Users/sermo/DjangoTFG/mevolib-ui/MEvoLibGUI/output/inference/AlignAndInference"
-    
