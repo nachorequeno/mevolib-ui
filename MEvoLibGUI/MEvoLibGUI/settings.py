@@ -111,11 +111,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-NEXTFLOW_PIPELINE_ROOT = "nextflowFiles/workflows"
-NEXTFLOW_DATA_ROOT = "nextflowFiles/data"
-NEXTFLOW_UPLOADS_ROOT = "nextflowFiles/uploads"
-NEXTFLOW_PUBLISH_DIR_ROOT = "nextflowFiles/publish"
-NEXTFLOW_REPORTS_DIR_ROOT = "nextflowFiles/reports"
+NEXTFLOW_PIPELINE_ROOT = Path("nextflowFiles").joinpath("workflows")
+NEXTFLOW_DATA_ROOT = Path("nextflowFiles").joinpath("data")
+NEXTFLOW_UPLOADS_ROOT = Path("nextflowFiles").joinpath("uploads")
+NEXTFLOW_PUBLISH_DIR_ROOT = Path("nextflowFiles").joinpath("publish")
+NEXTFLOW_REPORTS_DIR_ROOT = Path("nextflowFiles").joinpath("reports")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -123,6 +123,7 @@ STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR) / "static"
 STATICFILES_DIRS = [Path(BASE_DIR) / "staticFiles"]
 
+FULL_WORKFLOW_ROUTE = Path("nextflowFiles").joinpath("mevolib-workflow", "workflows", "mevolib.nf")
 WORKFLOW_OUTPUT = "output/"
 
 # Celery options

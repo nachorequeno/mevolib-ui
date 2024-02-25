@@ -306,20 +306,6 @@
 
                             </div>
 
-                            <div class="offset-1 my-2 form-group">
-
-                                <!-- Inference's output file format. -->
-                                <label class="col-form-label" for="cluster_output_format">File output format:</label>
-
-                                <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="cluster_output_format"
-                                        id="cluster_output_format" placeholder="By default, 'fasta'">
-                                </div>
-
-                                <span id="cluster_file_err" class="server_side_err text-danger my-2"></span>
-
-                            </div>
-
                         </div>
 
                         <!-- Execute the alignment stage or not. -->
@@ -413,6 +399,18 @@
                                 </div>
 
                                 <span id="align_file_err" class="server_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's arguments. -->
+                                <label class="col-form-label" for="align_arguments">Arguments:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control" type="text" name="align_arguments"
+                                        id="align_arguments" placeholder="By default, 'default'">
+                                </div>
 
                             </div>
 
@@ -556,11 +554,10 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content successful_modal">
 
-                <div class="modal-body">
+                <div class="modal-body d-flex flex-column justify-content-center">
                     <h2 class="text-center">Your workflow has been submitted successfully!</h2>
-                    <span class="d-block offset-5 mt-5">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Close</button>
-                    </span>
+                   
+                    <img class="mx-auto" src="{% static 'images/dancingChromo.gif' %}" alt="">
                 </div>
 
             </div>
@@ -599,6 +596,6 @@
 
 </body>
 <script src="{% static '/scripts/fullWorkflow.js' %}"></script>
-<script src="{% static '/scripts/alignAndInferenceCelery.js' %}"></script>
+<script src="{% static '/scripts/fullWorkflowTask.js' %}"></script>
 
 </html>

@@ -188,58 +188,6 @@ $("#add_inference").on('change', function(event){
     }
 })
 
-$("#full_wf_form").on("submit", function(event){ 
-
-    event.preventDefault(); /* If the user submits the form, the first thing to do is to prevent the server call, as the
-                               submission would be much clearer (specially, in error case) if it was made via an AJAX call,
-                               and page's reload would not be neccessary; saving up resources.  */
-   
-    var formData = new FormData($("#full_wf_form")[0]); /* First, the data the server will received is initialized to all
-                                                        the non-file parameters of the form. */
-
-                                                    /* Next, if Fetch has not been selected and any of the other stages have
-                                                       been selected, the matching input files are added to the dataset.  */
-    if ($("#cluster_input")[0].files.length === 1) {
-        formData.append("cluster_input", $("#cluster_input")[0].files[0]);
-    } else if ($("#align_input")[0].files.length === 1) {
-        formData.append("align_input", $("#align_input")[0].files[0]);
-    } else if ($("#inference_input")[0].files.length === 1) {
-        formData.append("inference_input", $("#inference_input")[0].files[0]);
-    }
-
-    if(validate()){     /* If the submission is valid, the AJAX call is made to asynchronously make server side's data
-                           validation, by sending the previously compound data and evaluating the response given. */
-        $.ajax({
-            url: "/full_workflow/",
-            type: "POST",
-            processData: false,
-            contentType:false,
-            headers: {
-                'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()   // Needed CSRF token, to avoid session hijack attacks.
-            },
-            data: formData,
-            dataType:"application/json",
-            success: function(response){    // If all goes fine, the form workflow is hidden and a message informing the user is shown.
-                $("#full_wf_modal").modal("hide")
-                $("#full_wf_successful_modal").modal("show")
-            },
-            error: function(response){  /* If there is a server error, it's matching message is shown alongside the form (or an alert
-                                            is shown, in case there is an unknown server internal error.)*/
-                if(response.responseJSON){
-                     if(response.responseJSON.align_file_err){
-                    $("#align_file_err").text(response.responseJSON.align_file_err).show();
-                    } 
-                    else if(response.responseJSON.cluster_file_err) $("#cluster_file_err").text(response.responseJSON.cluster_file_err).show();
-                    else if(response.responseJSON.inference_file_err) $("#inference_file_err").text(response.responseJSON.inference_file_err).show();
-                }
-                else{
-                    alert("An internal server error has occured.")
-                }
-               
-            }
-        })
-    }
-})
 
 function hideAndReset(){    /* All labels styles get back to normal ones and the whole form is reset. This function is triggered
                                everytime the user opens the modal, in order to ensure it does not have any trash. */
@@ -323,9 +271,7 @@ function hideErrors(){      // Both, server and client side errors, are hidden.
 
 function validateSelectFields(){    /* Client side validation to ensure the user chooses an alignment/
                                        inference tool. */
-
-
-                                       
+                
     if($("#add_cluster").prop("checked")){
 
         if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){

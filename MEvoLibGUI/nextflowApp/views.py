@@ -7,8 +7,8 @@ import random
 
 from MEvoLibGUI.tasks import run_workflow
 from MEvoLibGUI.settings import (
+    FULL_WORKFLOW_ROUTE as full_wf_route,
     NEXTFLOW_PIPELINE_ROOT as pr,
-    NEXTFLOW_DATA_ROOT as dr,
     NEXTFLOW_UPLOADS_ROOT as ur,
     WORKFLOW_OUTPUT
 )
@@ -76,7 +76,7 @@ def simple_inference(request):
 
 
 def parametrized_inference(request):
-    #    {% render_field param_form.bootstraps class="text-warning" %}
+
     if request.method == "POST":
         workflow_path = Path(pr).joinpath("param_inference", "main.nf")
 
@@ -173,7 +173,7 @@ def align_and_inference(request):
                 return JsonResponse({"task_id": task.id, "task_hash": task_hash}, status=200)
 
 
-def full_workflow(request):
+def full_workflow(request): 
     
     if request.method == "POST":    # User submits the full workflow's form.
         
@@ -187,31 +187,16 @@ def full_workflow(request):
                                                             # output mimetype must be checked before saving it or starting the workflow.
     
                 file_name = request.FILES["cluster_input"].name                                             
-                input_file_format = request.POST['cluster_input_format']
-                output_file_format = "fasta"
+                input_file_format = request.POST["cluster_input_format"]
                 
-                if request.POST["cluster_output_format"]:
-                    output_file_format = request.POST["cluster_output_format"]
-
-                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
-                    return JsonResponse(    # The reason behind this check is that MEvoLib can make conversions between certain file
-                                            # types if the input file is not supported, so given that ".fasta" is the most common, if
-                                            # it's input is not ".fasta" and it cannot be converted, the user must be prevented to
-                                            # avoid launching a workflow that can lead to error.
-                                            
-                        {"cluster_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
-                        status=400,
-                    )
-
-                else:
-                    input_file = FullWorkflowDocument(docfile=request.FILES["cluster_input"])
-                    input_file.save()
-                    stage = "cluster"
+                input_file = FullWorkflowDocument(docfile=request.FILES["cluster_input"])
+                input_file.save()
+                stage = "cluster"
 
             elif request.FILES.get("align_input", False):       # The same validation logic applies with alignment files...
                 
                 file_name = request.FILES["align_input"].name
-                input_file_format = request.POST['align_input_format']
+                input_file_format = request.POST["align_input_format"]
                 output_file_format = "fasta"
                 
                 if request.POST["align_output_format"]:
@@ -231,7 +216,7 @@ def full_workflow(request):
             elif request.FILES.get("inference_input", False):   # ... and with inference ones.
                 
                 file_name = request.FILES["inference_input"].name
-                input_file_format = request.POST['inference_input_format']
+                input_file_format = request.POST["inference_input_format"]
                 output_file_format = "newick"
                 
                 if request.POST["inference_output_format"]:
@@ -250,25 +235,33 @@ def full_workflow(request):
                     input_file.save()
                     stage = "inference"
 
-    query_file = ""
-
+    params = {}
+    
     if input_file:  # In case the form worn a valid file that is already saved, it's reference stage must ne checked to 
                     # add it to the query as a parameter; alongside it's input file format.
         file_path = Path(ur).joinpath("full_workflow", file_name).absolute()
+        params["input_file"] = str(file_path)
 
         if stage == "cluster":
-            query_file = f" -cif {request.POST['cluster_input_format']} -ci"
+            params["input_format"] = request.POST["cluster_input_format"]
+
         elif stage == "align":
-            query_file = f" -aif {request.POST['align_input_format']} -ai"
+           params["input_format"] = request.POST["align_input_format"]
+           
         elif stage == "inference":
-            query_file = f" -iif {request.POST['inference_input_format']} -ii"
+            params["input_format"] = request.POST["inference_input_format"]    
 
-        query_file += f" {file_path}"
-
-    full_query = buildFullQuery(request, query_file, stage)
-
-    return JsonResponse({}, status=200) # If there are no errors, the client side receives a JSON (empty, because it does not need any
-                                        # further information) and a status 200, that means the request was successful.
+    buildFullQuery(request, params, stage)
+    
+    workflow_path = str(Path(full_wf_route))
+    
+    task_hash = str(random.getrandbits(32))     # A hash to provide a folder name concurrently to the task.
+    
+    task = run_workflow.delay(str(workflow_path), params)   # After loading all the parameters, a celery task, which
+                                                            # will run the Nextflow workflow asynchronously, is called.
+    return JsonResponse({"task_id": task.id, "task_hash": task_hash}, status=200)   # If there are no errors, the client side receives a JSON fill with
+                                                                                    # the task information and a status 200, that means the request was
+                                                                                    # successful.
 
 def check_task_status(request):             # This function provides the client a way to know the status of their task, if requested any.
     task_id = request.GET.get("task_id")
@@ -276,9 +269,9 @@ def check_task_status(request):             # This function provides the client 
     if task_id:
         # Check the status of the Celery task
         task = AsyncResult(task_id)
-        return JsonResponse({'task_status': task.status}, status=200)
+        return JsonResponse({"task_status": task.status}, status=200)
     else:
-        return JsonResponse({'error': 'Task ID not provided'}, status=400)
+        return JsonResponse({"error": "Task ID not provided"}, status=400)
 
 def download_task_zip(request):    
 
@@ -297,84 +290,67 @@ def download_task_zip(request):
 
     zip_buffer.seek(0)      # The position of the buffer's file pointer is resetted to point to the start.
 
-    response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip', status=200) # The zip response is prepared and
+    response = HttpResponse(zip_buffer.getvalue(), content_type="application/zip", status=200) # The zip response is prepared and
                                                                                                # given to the user. 
-    response['Content-Disposition'] = 'attachment; filename="folder_download.zip"'
+    response["Content-Disposition"] = 'attachment; filename="folder_download.zip"'
 
     return response
 
-def buildFullQuery(request, query_file, stage):    # Function to construct the whole workflow query based on the data 
+def buildFullQuery(request, params, stage):    # Function to construct the whole workflow query based on the data 
                                             # submitted in the form.
-    total_query = {}
     req = request.POST
 
     if "add_fetch" in req and req["add_fetch"] == "on":  # Fetch stage selected.
-        fetch_query = "-q "     # Whatever the user has selected, the first parameter is the query (-q).
 
         if req["fetch_query"]:  # The full query is already given.
-            fetch_query += req["fetch_query"]
+            params["query"] = req["fetch_query"]
 
-        else:   # The query must be built.
-            fetch_query += f"{req['fetch_species']}[Organism]"  # In case query is not provided, 
-                                                                # the species must be given.
-
+        else:   # The query must be built.                  
+            params["species"] = req["fetch_species"]        # In case query is not provided, 
+                                                            # the species must be given.
+                                                                
             if req["fetch_seq_type"]:   # Apart from that, the sequence type and the reference sequence
                                         # may be present or not in the form, as they are optional values.
-                fetch_query += f" AND {req['fetch_seq_type']}[PROP]"
+                params["seq_type"] = req["fetch_seq_type"]
 
             if req["fetch_ref_seq"]:
-                fetch_query += f" AND {req['fetch_ref_seq']}[filter]"
+                params["refseq"] = req["fetch_ref_seq"]
 
-        fetch_query += f" -fo {req['fetch_output_name']}"   # Also, the output file name has to be present.
+        params["output_dir"] = f"./{req['fetch_output_name']}"  # Also, the output file name has to be present.
 
-        total_query["fetch_query"] = fetch_query
+    if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected.
 
-    if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected
-        cluster_query = ""
-
-        cluster_query += f"-co {req['cluster_output']}"    # However, the output file name is needed (as
-                                                            # in every single selected module).
-
-        if req["cluster_output_format"]:
-            cluster_query += f" -cof {req['cluster_output_format']}"
-            
-        if stage == "cluster":
-            cluster_query += query_file
-            
-        total_query["cluster_query"] = cluster_query
+        params["output_dir"] = f"./{req['cluster_output']}"     # However, the output file name is needed (as
+                                                                # in every single selected module).
 
     if "add_align" in req and req["add_align"] == "on":  
-                                                     # Align stage selected
+                                                     # Align stage selected.
                                                      # In this stage, both, the alignment tool and the
-                                                     # output file name are required.
-                                                     
-        align_query = f"-ao {req['align_output']} -at {req['align_tool']}"
+                                                     # output file name are required.                                
+        params["align_tool"] = req["align_tool"]
         
         if req["align_output_format"]:
-            align_query += f" -aof {req['align_output_format']}"
-
-        if stage == "align":
-            align_query += query_file
+            params["align_out_format"] = req["align_output_format"]
+        
+        if req["align_arguments"]:
+            params["align_args"] = req["align_arguments"]
             
-        total_query["align_query"] = align_query    
-
+        params["output_dir"] = f"./{req['align_output']}"         
+               
     if "add_inference" in req and req["add_inference"] == "on":  # Inference stage selected
-        inference_query = ""
 
                                             # The inference module may have plenty of non-required arguments,
                                             # such as the output file format or the arguments.
         if req["inference_output_format"]:
-            inference_query += f"-iof {req['inference_output_format']} "
-
-        if req["inference_arguments"]:
-            inference_query += f"-ia {req['inference_arguments']} "
+            params["inference_out_format"] = req["inference_output_format"]
         
-        # However, the inference tool, the output file name and the bootstraps must be specified.
-        inference_query += f"-it {req['inference_tool']} -io {req['inference_output']} -ib {req['inference_bootstraps']}"
-
-        if stage == "inference":
-            inference_query += query_file
+        if req["inference_arguments"]:
+            params["inference_args"] = req["inference_arguments"]
             
-        total_query["inference_query"] = inference_query     
-
-    return total_query
+        # However, the inference tool, the output file name and the bootstraps must be specified.
+        
+        params["inference_tool"] = req["inference_tool"]     
+        
+        params["inference_bootstraps"] = req["inference_bootstraps"]   
+            
+        params["output_dir"] = f"./{req['inference_output']}"  

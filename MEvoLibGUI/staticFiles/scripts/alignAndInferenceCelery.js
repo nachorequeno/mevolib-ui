@@ -26,9 +26,9 @@ $("#align_inf_form").on("submit", function(event){  // When the form is submitte
             checkTaskStatus(task_id, task_hash)  // Since the workflow execution is an asynchronous task, a function to
                                                  // check it's status from the server will be called.
         },
-        error: function(jqhxr, status, error){  // If trhere is an error, the form modal will be closed and an alert will be shown.
+        error: function(jqhxr, status, errorThrown){  // If trhere is an error, the form modal will be closed and an alert will be shown.
             $("#align_inf_modal").modal("hide")
-            alert("A server side error has ocurred: ", error)
+            alert("A server side error has ocurred: ", errorThrown)
         }       
     })
 })
