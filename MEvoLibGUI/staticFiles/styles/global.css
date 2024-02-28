@@ -17,3 +17,7 @@ body{
 .successful_modal{
     background-color: rgb(113, 188, 215);
 }
+
+.failed_modal{
+    background-color: rgb(215, 140, 113);
+}

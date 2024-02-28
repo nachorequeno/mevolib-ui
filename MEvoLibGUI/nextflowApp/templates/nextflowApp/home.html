@@ -256,6 +256,25 @@
                         <div id="cluster_params" class="workflow_params offset-1">
 
                             <div class="offset-1 my-2 form-group">
+                                <!-- Clustering tool's selection. -->
+                                <label class="col-form-label" for="cluster_tool">Clustering tool (<b>*</b>):</label>
+
+                                <!-- Dynamically loads clustering tools, provided by the server in function of the ones available in MEvoLib. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="cluster_tool" id="cluster_tool">
+                                        <option value="">Select an option</option>
+                                        {% for tool in cluster_tools %}
+                                        <option value={{tool}}>{{tool}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                                <span id="cluster_tool_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
 
                                 <!-- Cluster input sequences file, that will only be needed if the fetch stage has not been selected. -->
                                 <label class="col-form-label input_file_label" for="cluster_input">Input sequences file
@@ -279,7 +298,7 @@
                                     <select name="cluster_input_format" id="cluster_input_format"
                                         class="input_file_format">
                                         <option value="">Select an option</option>
-                                        {% for format in accepted_mimetypes %}
+                                        {% for format in accepted_input_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
                                         {% endfor %}
                                     </select>
@@ -362,7 +381,7 @@
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="align_input_format" id="align_input_format" class="input_file_format">
                                         <option value="">Select an option</option>
-                                        {% for format in accepted_mimetypes %}
+                                        {% for format in accepted_input_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
                                         {% endfor %}
                                     </select>
@@ -390,12 +409,17 @@
 
                             <div class="offset-1 my-2 form-group">
 
-                                <!-- Inference's output file format. -->
-                                <label class="col-form-label" for="align_output_format">File output format:</label>
+                                <!-- Align's output file format. -->
+                                <label class="col-form-label" for="align_output_format">File output
+                                    format:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="align_output_format"
-                                        id="align_output_format" placeholder="By default, 'fasta'">
+                                    <select name="align_output_format" id="align_output_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_align_output_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
                                 <span id="align_file_err" class="server_side_err text-danger my-2"></span>
@@ -408,8 +432,8 @@
                                 <label class="col-form-label" for="align_arguments">Arguments:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="align_arguments"
-                                        id="align_arguments" placeholder="By default, 'default'">
+                                    <input class="form-control" type="text" name="align_arguments" id="align_arguments"
+                                        placeholder="By default, 'default'">
                                 </div>
 
                             </div>
@@ -467,10 +491,9 @@
 
                                 <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <select name="inference_input_format" id="inference_input_format"
-                                        class="input_file_format">
+                                    <select name="inference_input_format" id="inference_input_format" class="input_file_format">
                                         <option value="">Select an option</option>
-                                        {% for format in accepted_mimetypes %}
+                                        {% for format in accepted_input_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
                                         {% endfor %}
                                     </select>
@@ -499,11 +522,16 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Inference's output file format. -->
-                                <label class="col-form-label" for="inference_output_format">File output format:</label>
+                                <label class="col-form-label" for="inference_output_format">File
+                                    output format:</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control" type="text" name="inference_output_format"
-                                        id="inference_output_format" placeholder="By default, 'newick'">
+                                    <select name="inference_output_format" id="inference_output_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_inference_output_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
 
                                 <span id="inference_file_err" class="server_side_err text-danger my-2"></span>
@@ -556,7 +584,7 @@
 
                 <div class="modal-body d-flex flex-column justify-content-center">
                     <h2 class="text-center">Your workflow has been submitted successfully!</h2>
-                   
+
                     <img class="mx-auto" src="{% static 'images/dancingChromo.gif' %}" alt="">
                 </div>
 
@@ -564,12 +592,13 @@
         </div>
     </div>
 
-    <div id="align_inference_successful_modal" class="modal top fade" data-bs-backdrop="static">
+    <div id="full_workflow_successful_modal" class="modal top fade" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content successful_modal">
 
                 <div class="modal-body">
-                    <h2 class="text-center">Your workflow has been submitted, wait until it has finished (it could take some time).</h2>
+                    <h2 class="text-center">Your workflow has been submitted, wait until it has finished (it could take
+                        some time).</h2>
                 </div>
 
                 <img src="{% static 'images/dancingChromo.gif' %}" alt="">
@@ -578,7 +607,7 @@
         </div>
     </div>
 
-    <div id="align_inference_finished_modal" class="modal top fade" data-bs-backdrop="static">
+    <div id="full_workflow_finished_modal" class="modal top fade" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content successful_modal">
 
@@ -587,7 +616,24 @@
                 </div>
 
                 <div class="modal-body">
-                    <h2 class="text-center">Your task has finished, and the files have been dropped to your Downloads menu. <br> Thanks for using MEvoLib!</h2>
+                    <h2 class="text-center">Your task has finished, and the files have been dropped to your Downloads
+                        menu. <br> Thanks for using MEvoLib!</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="full_workflow_failed_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content failed_modal">
+
+                <div class="modal-header">
+                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h2 class="text-center">The running has encountered an error. <br> Please, check the logfile to find out what went wrong.</h2>
                 </div>
 
             </div>

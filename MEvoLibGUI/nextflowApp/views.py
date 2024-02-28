@@ -14,9 +14,12 @@ from MEvoLibGUI.settings import (
 )
 from MEvoLibGUI.forms import AlignForm, ParamInferenceForm, AlignInfForm
 from .formats import (
+    ALIGN_OUTPUT as align_output_mimetypes,
     ALIGN_TOOLS_LIST as align_tools,
+    CLUSTER_TOOLS_LIST as cluster_tools,
     INFERENCE_TOOLS_LIST as inference_tools,
     INFERENCE_FORMAT_STR as inference_input_accepted,
+    INFERENCE_OUTPUT as inference_output_mimetypes,
     VALID_INPUT_FILES as accepted_mimetypes,
     VALID_CONVERSION_FILES as allowed_conversions
 )
@@ -38,14 +41,17 @@ def home(request):
     return render(
         request,
         "nextflowApp/home.html",
-        {
+        {   
+            "accepted_align_output_mimetypes": align_output_mimetypes,
+            "accepted_inference_output_mimetypes": inference_output_mimetypes,
+            "accepted_input_mimetypes": accepted_mimetypes,
             "al_form": al_form,
-            "param_form": param_form,
             "al_inf_form": al_inf_form,
             "align_tools": align_tools,
-            "inference_tools": inference_tools,
+            "cluster_tools": cluster_tools,
+            "param_form": param_form,
             "inference_input_accepted": inference_input_accepted,
-            "accepted_mimetypes": accepted_mimetypes
+            "inference_tools": inference_tools,
         },
     )
 
@@ -197,14 +203,10 @@ def full_workflow(request):
                 
                 file_name = request.FILES["align_input"].name
                 input_file_format = request.POST["align_input_format"]
-                output_file_format = "fasta"
-                
-                if request.POST["align_output_format"]:
-                    output_file_format = request.POST["align_output_format"]
 
-                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
+                if input_file_format != "fasta" and (input_file_format, "fasta") not in allowed_conversions:
                     return JsonResponse(    
-                        {"align_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
+                        {"align_file_err": f"The file conversion from '.{input_file_format}' to '.fasta' is not supported. Please, select another format and try again."},
                         status=400,
                     )
 
@@ -217,14 +219,10 @@ def full_workflow(request):
                 
                 file_name = request.FILES["inference_input"].name
                 input_file_format = request.POST["inference_input_format"]
-                output_file_format = "newick"
-                
-                if request.POST["inference_output_format"]:
-                    output_file_format = request.POST["inference_output_format"]
 
-                if input_file_format != "fasta" and (input_file_format, output_file_format) not in allowed_conversions:
+                if input_file_format != "fasta" and (input_file_format, "fasta") not in allowed_conversions:
                     return JsonResponse(   
-                        {"inference_file_err": f"The file conversion from '.{input_file_format}' to '.{output_file_format}' is not supported. Please, select another files and try again."},
+                        {"inference_file_err": f"The file conversion from '.{input_file_format}' to '.fasta' is not supported. Please, select another format and try again."},
                         status=400,
                     )
 
@@ -251,7 +249,7 @@ def full_workflow(request):
         elif stage == "inference":
             params["input_format"] = request.POST["inference_input_format"]    
 
-    buildFullQuery(request, params, stage)
+    getQueryParams(request, params, stage)
     
     workflow_path = str(Path(full_wf_route))
     
@@ -296,8 +294,8 @@ def download_task_zip(request):
 
     return response
 
-def buildFullQuery(request, params, stage):    # Function to construct the whole workflow query based on the data 
-                                            # submitted in the form.
+def getQueryParams(request, params, stage):     # Function to construct the whole workflow query based on the data 
+                                                # submitted in the form.
     req = request.POST
 
     if "add_fetch" in req and req["add_fetch"] == "on":  # Fetch stage selected.
@@ -321,7 +319,8 @@ def buildFullQuery(request, params, stage):    # Function to construct the whole
     if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected.
 
         params["output_dir"] = f"./{req['cluster_output']}"     # However, the output file name is needed (as
-                                                                # in every single selected module).
+                                                                # in every single selected module); alongside
+        params["cluster_tool"] = req["cluster_tool"]        # the clustering tool.
 
     if "add_align" in req and req["add_align"] == "on":  
                                                      # Align stage selected.

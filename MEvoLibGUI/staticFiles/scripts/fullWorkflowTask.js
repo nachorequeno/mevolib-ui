@@ -75,8 +75,8 @@ function checkTaskStatus(task_id, task_hash, task_name){
                 download_task_zip(task_hash, task_name);
             }
             else if(task_status === "FAILURE"){          // If it fails, the user will be notified.
-                $("#align_inference_successful_modal").modal("hide")
-                alert("Somethong went bad with the task... Please, try again later.")
+                $("#full_workflow_successful_modal").modal("hide")
+                $("#full_workflow_failed_modal").modal("show")
             }
             else{   // If it has not finished yet, it will be called again within a couple of seconds.
                 setTimeout(function() {
@@ -86,7 +86,7 @@ function checkTaskStatus(task_id, task_hash, task_name){
 
         },
         error: function(jqhxr, status, error){      // If an error occurs, the user will be notified.
-            $("#align_inference_successful_modal").modal("hide")
+            $("#full_workflow_successful_modal").modal("hide")
             alert("A server side error has ocurred: ", error)
         }
     })
@@ -108,8 +108,8 @@ function download_task_zip(task_hash, task_name){  // An AJAX call makes the ser
        
         success: function(response){    // If all goes fine, the user will get a message to tell them the zip has been downloaded.
 
-            $("#align_inference_successful_modal").modal("hide")
-            $("#align_inference_finished_modal").modal("show")
+            $("#full_workflow_successful_modal").modal("hide")
+            $("#full_workflow_successful_modal").modal("show")
 
             // A zip link is generated and clicked in the background, so that user does not need to click on it.
             var link = document.createElement('a'); // Link (a href...) element dynamically generated and added to the DOM.
@@ -119,7 +119,7 @@ function download_task_zip(task_hash, task_name){  // An AJAX call makes the ser
             link.click();
         },
         error: function(jqhxr, status, errorThrown){    // Again, any error will be communicated to the user.
-            $("#align_inference_successful_modal").modal("hide")
+            $("#full_workflow_successful_modal").modal("hide")
             alert("A server side error has ocurred: ", errorThrown)
         }
     })

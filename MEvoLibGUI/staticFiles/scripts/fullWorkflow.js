@@ -235,8 +235,8 @@ function resetRequirements(){   /* All the "required" attributes inputs are made
 function showSelectedInput(){   /* If any stage (that is not fetch) had been selected, the one chosen before is cleared and a new
                                    one is selected, as order marks the priority. */
     var selected
+    var previousId = $(".selected_input").attr("id")
 
-    hideSelectedInput();    // The previously selectd input file is hidden, cleared and made not required.
 
     if(!$("#add_fetch").prop("checked")){   /* If the user has not selected the fetch stage, there will be an input file selected
                                                from the selected stages from which those stages will execute. */ 
@@ -251,7 +251,10 @@ function showSelectedInput(){   /* If any stage (that is not fetch) had been sel
         }
         
                         // If there is a selected file, it is made visible (alongside with its label and file format) and required.
-        if(selected){
+        if(selected && selected.attr("id") !== previousId){
+
+            hideSelectedInput();    // The previously selected input file is hidden, cleared and made not required.
+
             $(selected).addClass("selected_input").prop("required",true).show();  
             $("label[for='"+$(selected).attr("id")+"']").show(); 
             $("label[for='"+$(selected).attr("id")+"_format']").show(); 
@@ -274,7 +277,14 @@ function validateSelectFields(){    /* Client side validation to ensure the user
                 
     if($("#add_cluster").prop("checked")){
 
-        if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){
+        
+        if($("#cluster_tool").val()===""){
+
+            $("#cluster_tool_err").text("Please, select a valid clustering tool.").show();
+            return false;
+        }
+
+        else if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){
 
             $("#cluster_input_format_err").text("Please, select a valid input file format.").show();
             return false;
@@ -283,29 +293,29 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_align").prop("checked")){
 
-        if($("#align_input").hasClass("selected_input") && $("#align_input_format").val()===""){
+        if($("#align_tool").val()===""){
 
-            $("#align_input_format_err").text("Please, select a valid input file format.").show();
+            $("#align_tool_err").text("Please, select a valid alignment tool.").show();
             return false;
         }
 
-        else if($("#align_tool").val()===""){
+        else if($("#align_input").hasClass("selected_input") && $("#align_input_format").val()===""){
 
-            $("#align_tool_err").text("Please, select a valid alignment tool.").show();
+            $("#align_input_format_err").text("Please, select a valid input file format.").show();
             return false;
         }
     }
 
     if($("#add_inference").prop("checked")){
 
-        if($("#inference_input").hasClass("selected_input") && $("#inference_input_format").val()===""){
-
-            $("#inference_input_format_err").text("Please, select a valid input file format.").show();
+        if($("#inference_tool").val()===""){
+            $("#inference_tool_err").text("Please, select a valid inference tool.").show();
             return false;
         }
 
-        else if($("#inference_tool").val()===""){
-            $("#inference_tool_err").text("Please, select a valid inference tool.").show();
+        else if($("#inference_input").hasClass("selected_input") && $("#inference_input_format").val()===""){
+
+            $("#inference_input_format_err").text("Please, select a valid input file format.").show();
             return false;
         }
     }
