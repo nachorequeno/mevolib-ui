@@ -19,7 +19,7 @@ $("#align_inf_form").on("submit", function(event){  // When the form is submitte
         dataType:"json",
         success: function(response){            // If all is fine, a modal indicating the correct submission will be shown.
             $("#align_inf_modal").modal("hide")
-            $("#align_inference_successful_modal").modal("show")
+            $("#full_workflow_successful_modal").modal("show")
 
             var task_id = response["task_id"], task_hash = response["task_hash"]
 
@@ -51,7 +51,7 @@ function checkTaskStatus(task_id, task_hash){
                 download_task_zip(task_hash);
             }
             else if(task_status === "FAILURE"){          // If it fails, the user will be notified.
-                $("#align_inference_successful_modal").modal("hide")
+                $("#full_workflow_successful_modal").modal("hide")
                 alert("Somethong went bad with the task... Please, try again later.")
             }
             else{   // If it has not finished yet, it will be called again within a couple of seconds.
@@ -62,7 +62,7 @@ function checkTaskStatus(task_id, task_hash){
 
         },
         error: function(jqhxr, status, error){      // If an error occurs, the user will be notified.
-            $("#align_inference_successful_modal").modal("hide")
+            $("#full_workflow_successful_modal").modal("hide")
             alert("A server side error has ocurred: ", error)
         }
     })
@@ -84,8 +84,8 @@ function download_task_zip(task_hash){  // An AJAX call makes the server to send
        
         success: function(response){    // If all goes fine, the user will get a message to tell them the zip has been downloaded.
 
-            $("#align_inference_successful_modal").modal("hide")
-            $("#align_inference_finished_modal").modal("show")
+            $("#full_workflow_successful_modal").modal("hide")
+            $("#full_workflow_finished_modal").modal("show")
 
             // A zip link is generated and clicked in the background, so that user does not need to click on it.
             var link = document.createElement('a');
@@ -95,7 +95,7 @@ function download_task_zip(task_hash){  // An AJAX call makes the server to send
             link.click();
         },
         error: function(jqhxr, status, errorThrown){    // Again, any error will be communicated to the user.
-            $("#align_inference_successful_modal").modal("hide")
+            $("#full_workflow_successful_modal").modal("hide")
             alert("A server side error has ocurred: ", errorThrown)
         }
     })

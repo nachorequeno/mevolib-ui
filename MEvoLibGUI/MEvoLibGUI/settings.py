@@ -123,8 +123,8 @@ STATIC_URL = "static/"
 STATIC_ROOT = Path(BASE_DIR) / "static"
 STATICFILES_DIRS = [Path(BASE_DIR) / "staticFiles"]
 
-FULL_WORKFLOW_ROUTE = Path("nextflowFiles").joinpath("mevolib-workflow", "workflows", "mevolib.nf")
-WORKFLOW_OUTPUT = "output/"
+FULL_WORKFLOW_ROUTE = Path("nextflowFiles").joinpath("mevolib-workflow", "main.nf")
+WORKFLOW_OUTPUT = str(Path("output").absolute())
 
 # Celery options
 CELERY_BROKER_URL = "redis://localhost:6379"

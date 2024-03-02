@@ -20,7 +20,7 @@ $("#add_fetch").on('change', function(event){
 
         hideSelectedInput();     /* If the fetch stage is selected, it does not make any sense to make the user to 
                                     introduce input files, as the workflow will start from fetch files, so the one
-                                    that could have beem selected are hidden is cleared; alongside with its label.*/
+                                    that could have beem selected is hidden and cleared; alongside with its label.*/
                   
         $(".input_file").each(function(){   /* All the Cluster, Align and Inference file inputs are hidden alongside 
                                                their labels and file format, as there is no point on showing them if
@@ -39,8 +39,17 @@ $("#add_fetch").on('change', function(event){
         $(".input_file_format_label").each(function(){
             $(this).hide();
         })  
+
+        $(".output_label").each(function(){
+            $(this).hide();
+        })
+        $(".output_name").each(function(){
+            $(this).prop("required", false).hide();
+        })
+
+        $("#fetch_output_name").prop("required", true).show();
+        $("#fetch_output_label").show();
             
-        
     }
 
     else{   /* The user does not want to make a fetch stage, so its parameters are hidden, the fetch label style gets
@@ -53,6 +62,7 @@ $("#add_fetch").on('change', function(event){
         $("#query_opt").prop("checked", false);
         $("#species_opt").prop("checked", false);
         $("#fetch_output").hide();
+        $("#fetch_ref_seq").prop("checked", false);
 
         $(".fetch_required").each(function(){   /*Also, the required files now are not required, as the user has 
                                                   unselected the fetch stage, so they are not needed anymore.*/
@@ -138,6 +148,8 @@ $("#add_align").on('change', function(event){
 
             $("label[for='"+$("#align_input").attr("id")+"_format']").hide(); 
             $("select[id='"+$("#align_input").attr("id")+"_format']").hide(); 
+            $("#align_output").prop("required", false).hide();
+            $("#align_output_label").hide();
         }
 
     }
@@ -174,6 +186,8 @@ $("#add_inference").on('change', function(event){
             $("label[for='"+$("#inference_input").attr("id")+"']").hide(); 
             $("label[for='"+$("#inference_input").attr("id")+"_format']").hide(); 
             $("select[id='"+$("#inference_input").attr("id")+"_format']").hide(); 
+            $("#inference_output").prop("required", false).hide();
+            $("#inference_output_label").hide();
         }
     }
 
@@ -203,12 +217,40 @@ function hideAndReset(){    /* All labels styles get back to normal ones and the
 
 function hideSelectedInput(){   /* If any stage (that is not fetch) had been selected, it is hidden, reset, made not required
                                    and loses it's "selected_input" class. */
-    $(".selected_input").each(function(){                   
+    $(".selected_input").each(function(){                  
         $(this).removeClass("selected_input").prop("required",false).val("").hide();    
         $("label[for='"+this.id+"']").hide(); 
         $("label[for='"+this.id+"_format']").hide(); 
         $("select[id='"+this.id+"_format']").hide(); 
     })
+}
+
+function manageOutput(stage){
+    
+    $(".output_label").each(function(){
+        $(this).hide();
+    })
+    $(".output_name").each(function(){
+        $(this).prop("required", false).hide();
+    })
+
+    if(stage==="fetch"){
+        $("#fetch_output_name").prop("required", true).show();
+        $("#fetch_output_label").show();
+    }
+    else if(stage==="cluster"){
+        $("#cluster_output").prop("required", true).show();
+        $("#cluster_output_label").show();
+    }
+    else if(stage==="align"){
+        $("#align_output").prop("required", true).show();
+        $("#align_output_label").show();
+    }
+    else if(stage==="inference"){
+        $("#inference_output").prop("required", true).show();
+        $("#inference_output_label").show();
+    }
+
 }
 
 function resetRequirements(){   /* All the "required" attributes inputs are made non-required, as it is called when the form has
@@ -236,18 +278,22 @@ function showSelectedInput(){   /* If any stage (that is not fetch) had been sel
                                    one is selected, as order marks the priority. */
     var selected
     var previousId = $(".selected_input").attr("id")
-
+    var stage="fetch"
 
     if(!$("#add_fetch").prop("checked")){   /* If the user has not selected the fetch stage, there will be an input file selected
                                                from the selected stages from which those stages will execute. */ 
+
         if($("#add_cluster").prop("checked")){
-        selected=$("#cluster_input")
+            selected=$("#cluster_input")
+            stage="cluster"
         }
         else if($("#add_align").prop("checked")){
             selected=$("#align_input")
+            stage="align"
         }
         else if($("#add_inference").prop("checked")){
             selected=$("#inference_input")
+            stage="inference"
         }
         
                         // If there is a selected file, it is made visible (alongside with its label and file format) and required.
@@ -259,8 +305,12 @@ function showSelectedInput(){   /* If any stage (that is not fetch) had been sel
             $("label[for='"+$(selected).attr("id")+"']").show(); 
             $("label[for='"+$(selected).attr("id")+"_format']").show(); 
             $("select[id='"+$(selected).attr("id")+"_format']").show(); 
+
+
         }
     }
+
+        manageOutput(stage)
 }
 
 function hideErrors(){      // Both, server and client side errors, are hidden.
@@ -326,7 +376,16 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 function validateOutputNames(){     /* Client side validation to ensure the user does not introduce invalid
                                        (empty/full empty spaces) file outputs. */
 
-    if($("#add_cluster").prop("checked")){
+                                                 
+    if($("#add_fetch").prop("checked")){
+
+        if($("#fetch_output_name").val().trim()===""){
+            $("#fetch_output_err").text("Please, write a non-empty output name.").show();
+            return false;
+        }
+    }
+                                       
+    if($("#cluster_input").hasClass("selected_input")){
 
         if($("#cluster_output").val().trim()===""){
             $("#cluster_output_err").text("Please, write a non-empty output name.").show();
@@ -334,7 +393,7 @@ function validateOutputNames(){     /* Client side validation to ensure the user
         }
     }
 
-    if($("#add_align").prop("checked")){
+    if($("#align_input").hasClass("selected_input")){
 
         if($("#align_output").val().trim()===""){
             $("#align_output_err").text("Please, write a non-empty output name.").show();
@@ -342,7 +401,7 @@ function validateOutputNames(){     /* Client side validation to ensure the user
         }
     }
 
-    if($("#add_inference").prop("checked")){
+    if($("#inference_input").hasClass("selected_input")){
 
         if($("#inference_output").val().trim()===""){
             $("#inference_output_err").text("Please, write a non-empty output name.").show();
@@ -353,7 +412,17 @@ function validateOutputNames(){     /* Client side validation to ensure the user
     return true;
 }
 
+function validateStages(){
+    if (!$("#add_fetch").prop("checked") && !$("#add_cluster").prop("checked") &&
+     !$("#add_align").prop("checked") && !$("#add_inference").prop("checked")){
+        $("#stages_err").text("Please, select at least one stage.").show();
+        return false;
+     }
+
+     return true;
+}
+
 function validate(){    // Form validation.
     hideErrors();
-    return validateSelectFields() && validateOutputNames();
+    return validateStages() && validateSelectFields() && validateOutputNames();
 }

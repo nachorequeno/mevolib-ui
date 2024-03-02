@@ -33,11 +33,11 @@ $("#full_wf_form").on("submit", function(event){
             dataType:"json",
             success: function(response){    // If all goes fine, the form workflow is hidden and a message informing the user is shown.
                 $("#full_wf_modal").modal("hide")
-                $("#full_wf_successful_modal").modal("show")
+                $("#full_workflow_successful_modal").modal("show")
 
-                var task_id = response["task_id"], task_hash = response["task_hash"], task_name = response["task_name"]
+                var task_id = response["task_id"], task_hash = response["task_hash"], zip_name = response["zip_name"]
 
-                checkTaskStatus(task_id, task_hash, task_name)  // Since the workflow execution is an asynchronous task, a function to
+                checkTaskStatus(task_id, task_hash, zip_name)  // Since the workflow execution is an asynchronous task, a function to
                                                                 // check it's status from the server will be called.
             },
             error: function(response){  /* If there is a server error, it's matching message is shown alongside the form (or an alert
@@ -57,7 +57,7 @@ $("#full_wf_form").on("submit", function(event){
     }
 })
 
-function checkTaskStatus(task_id, task_hash, task_name){
+function checkTaskStatus(task_id, task_hash, zip_name){
 
     $.ajax({
         url: "/check_task_status/",
@@ -72,16 +72,20 @@ function checkTaskStatus(task_id, task_hash, task_name){
             var task_status = response["task_status"]
 
             if(task_status === "SUCCESS"){  // If it finishes successfully, another function to get the generated files will be called.
-                download_task_zip(task_hash, task_name);
+                download_task_zip(task_hash, zip_name);
             }
             else if(task_status === "FAILURE"){          // If it fails, the user will be notified.
                 $("#full_workflow_successful_modal").modal("hide")
                 $("#full_workflow_failed_modal").modal("show")
             }
-            else{   // If it has not finished yet, it will be called again within a couple of seconds.
+            else if(task_status === "PENDING"){   // If it has not finished yet, it will be called again within a couple of seconds.
                 setTimeout(function() {
-                    checkTaskStatus(task_id, task_hash, task_name);
+                    checkTaskStatus(task_id, task_hash, zip_name);
                 }, 2000); // Check again after 2 seconds
+            }
+            else{
+                $("#full_workflow_successful_modal").modal("hide")
+                alert("A server side error has ocurred. Try again later.")
             }
 
         },
@@ -92,7 +96,7 @@ function checkTaskStatus(task_id, task_hash, task_name){
     })
 }
 
-function download_task_zip(task_hash, task_name){  // An AJAX call makes the server to send the client a ZIP with its files.
+function download_task_zip(task_hash, zip_name){  // An AJAX call makes the server to send the client a ZIP with its files.
 
     $.ajax({
         url: "/download_task_zip/",
@@ -109,12 +113,12 @@ function download_task_zip(task_hash, task_name){  // An AJAX call makes the ser
         success: function(response){    // If all goes fine, the user will get a message to tell them the zip has been downloaded.
 
             $("#full_workflow_successful_modal").modal("hide")
-            $("#full_workflow_successful_modal").modal("show")
+            $("#full_workflow_finished_modal").modal("show")
 
             // A zip link is generated and clicked in the background, so that user does not need to click on it.
             var link = document.createElement('a'); // Link (a href...) element dynamically generated and added to the DOM.
             link.href = window.URL.createObjectURL(response)
-            link.download = task_name;    // Zip, named after the original output the client selected.
+            link.download = zip_name;    // Zip, named after the original output the client selected.
             document.body.appendChild(link);
             link.click();
         },

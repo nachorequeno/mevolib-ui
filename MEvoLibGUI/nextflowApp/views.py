@@ -10,7 +10,7 @@ from MEvoLibGUI.settings import (
     FULL_WORKFLOW_ROUTE as full_wf_route,
     NEXTFLOW_PIPELINE_ROOT as pr,
     NEXTFLOW_UPLOADS_ROOT as ur,
-    WORKFLOW_OUTPUT
+    WORKFLOW_OUTPUT as wf_output
 )
 from MEvoLibGUI.forms import AlignForm, ParamInferenceForm, AlignInfForm
 from .formats import (
@@ -235,6 +235,9 @@ def full_workflow(request):
 
     params = {}
     
+    task_hash = str(random.getrandbits(32))     # A hash to provide a folder name concurrently to the task.
+    output_name = ""
+    
     if input_file:  # In case the form worn a valid file that is already saved, it's reference stage must ne checked to 
                     # add it to the query as a parameter; alongside it's input file format.
         file_path = Path(ur).joinpath("full_workflow", file_name).absolute()
@@ -242,22 +245,28 @@ def full_workflow(request):
 
         if stage == "cluster":
             params["input_format"] = request.POST["cluster_input_format"]
+            output_name = request.POST["cluster_output"]
 
         elif stage == "align":
-           params["input_format"] = request.POST["align_input_format"]
+            params["input_format"] = request.POST["align_input_format"]
+            output_name = request.POST["align_output"]
            
         elif stage == "inference":
-            params["input_format"] = request.POST["inference_input_format"]    
-
+            params["input_format"] = request.POST["inference_input_format"] 
+            output_name = request.POST["inference_output"]
+            
+    else:
+        output_name =  request.POST["fetch_output_name"]
+    
+    params["output_dir"] = str(Path(wf_output).joinpath(task_hash))  
+      
     getQueryParams(request, params, stage)
     
     workflow_path = str(Path(full_wf_route))
     
-    task_hash = str(random.getrandbits(32))     # A hash to provide a folder name concurrently to the task.
-    
     task = run_workflow.delay(str(workflow_path), params)   # After loading all the parameters, a celery task, which
                                                             # will run the Nextflow workflow asynchronously, is called.
-    return JsonResponse({"task_id": task.id, "task_hash": task_hash}, status=200)   # If there are no errors, the client side receives a JSON fill with
+    return JsonResponse({"task_id": task.id, "task_hash": task_hash, "zip_name": output_name}, status=200)   # If there are no errors, the client side receives a JSON fill with
                                                                                     # the task information and a status 200, that means the request was
                                                                                     # successful.
 
@@ -273,7 +282,7 @@ def check_task_status(request):             # This function provides the client 
 
 def download_task_zip(request):    
 
-    folder_path = Path(WORKFLOW_OUTPUT).joinpath(request.GET.get("task_hash")).absolute()
+    folder_path = Path(wf_output).joinpath(request.GET.get("task_hash")).absolute()
 
     zip_buffer = io.BytesIO() # Fisrt, a zip buffer is created to allocate the following zip contents.
 
@@ -311,15 +320,11 @@ def getQueryParams(request, params, stage):     # Function to construct the whol
                                         # may be present or not in the form, as they are optional values.
                 params["seq_type"] = req["fetch_seq_type"]
 
-            if req["fetch_ref_seq"]:
-                params["refseq"] = req["fetch_ref_seq"]
-
-        params["output_dir"] = f"./{req['fetch_output_name']}"  # Also, the output file name has to be present.
+            if "ref_seq" in req and req["ref_seq"]:
+                params["refseq"] = "True"
 
     if "add_cluster" in req and req["add_cluster"] == "on":  # Cluster stage selected.
 
-        params["output_dir"] = f"./{req['cluster_output']}"     # However, the output file name is needed (as
-                                                                # in every single selected module); alongside
         params["cluster_tool"] = req["cluster_tool"]        # the clustering tool.
 
     if "add_align" in req and req["add_align"] == "on":  
@@ -332,9 +337,7 @@ def getQueryParams(request, params, stage):     # Function to construct the whol
             params["align_out_format"] = req["align_output_format"]
         
         if req["align_arguments"]:
-            params["align_args"] = req["align_arguments"]
-            
-        params["output_dir"] = f"./{req['align_output']}"         
+            params["align_args"] = req["align_arguments"]   
                
     if "add_inference" in req and req["add_inference"] == "on":  # Inference stage selected
 
@@ -351,5 +354,3 @@ def getQueryParams(request, params, stage):     # Function to construct the whol
         params["inference_tool"] = req["inference_tool"]     
         
         params["inference_bootstraps"] = req["inference_bootstraps"]   
-            
-        params["output_dir"] = f"./{req['inference_output']}"  

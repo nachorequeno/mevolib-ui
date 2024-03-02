@@ -177,13 +177,15 @@
 
                                 <div id="fetch_output" class="query_species_params offset-1 my-2 form-group">
                                     <!-- Fetch output file name. -->
-                                    <label class="col-form-label" for="fetch_output_name">Output name
+                                    <label id="fetch_output_label" class="col-form-label output_label" for="fetch_output_name">Output name
                                         (<b>*</b>):</label>
 
                                     <div class="col-md-8 col-sm-10 col-12">
-                                        <input class="form-control fetch_required" type="text" name="fetch_output_name"
+                                        <input class="form-control fetch_required output_name" type="text" name="fetch_output_name"
                                             id="fetch_output_name">
                                     </div>
+
+                                    <span id="fetch_output_err" class="client_side_err text-danger my-2"></span>
 
                                 </div>
 
@@ -228,10 +230,10 @@
                                     <div class="offset-1 my-2 form-group">
 
                                         <!-- Fetch reference sequence -->
-                                        <label class="col-form-label" for="fetch_seq_type">Reference sequence:</label>
-
-                                        <div class="col-md-8 col-sm-10 col-12">
-                                            <input class="form-control" type="text" name="fetch_ref_seq"
+                                        <div class="form-check my-2">
+                                            <label class="form-check-label" for="fetch_ref_seq">Reference
+                                                sequence:</label>
+                                            <input class="form-check-input" type="checkbox" name="ref_seq"
                                                 id="fetch_ref_seq">
                                         </div>
 
@@ -311,11 +313,11 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Cluster output file name. -->
-                                <label class="col-form-label" for="cluster_output">Output file name, without extension
+                                <label id="cluster_output_label" class="col-form-label output_label" for="cluster_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control cluster_required" type="text" name="cluster_output"
+                                    <input class="form-control cluster_required output_name" type="text" name="cluster_output"
                                         id="cluster_output">
                                 </div>
 
@@ -394,11 +396,11 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Alignment output file name. -->
-                                <label class="col-form-label" for="align_output">Output file name, without extension
+                                <label id="align_output_label" class="col-form-label output_label" for="align_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control align_required" type="text" name="align_output"
+                                    <input class="form-control align_required output_name" type="text" name="align_output"
                                         id="align_output">
                                 </div>
 
@@ -491,7 +493,8 @@
 
                                 <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <select name="inference_input_format" id="inference_input_format" class="input_file_format">
+                                    <select name="inference_input_format" id="inference_input_format"
+                                        class="input_file_format">
                                         <option value="">Select an option</option>
                                         {% for format in accepted_input_mimetypes %}
                                         <option value={{format}}>{{format}}</option>
@@ -505,11 +508,11 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Inference's output file name. -->
-                                <label class="col-form-label" for="inference_output">Output file name, without extension
+                                <label id="inference_output_label" class="col-form-label output_label" for="inference_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control inference_required" type="text" name="inference_output"
+                                    <input class="form-control inference_required output_name" type="text" name="inference_output"
                                         id="inference_output">
                                 </div>
 
@@ -565,6 +568,8 @@
                             </div>
 
                         </div>
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                        <span id="stages_err" class="client_side_err text-danger my-2"></span>
 
                 </div>
                 <!-- Reset and submit buttons. -->
@@ -578,31 +583,15 @@
     </div>
 
     <!-- Modal that will inform the user if they execute the full workflow and there are no errors. -->
-    <div id="full_wf_successful_modal" class="modal top fade" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content successful_modal">
-
-                <div class="modal-body d-flex flex-column justify-content-center">
-                    <h2 class="text-center">Your workflow has been submitted successfully!</h2>
-
-                    <img class="mx-auto" src="{% static 'images/dancingChromo.gif' %}" alt="">
-                </div>
-
-            </div>
-        </div>
-    </div>
-
     <div id="full_workflow_successful_modal" class="modal top fade" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content successful_modal">
-
-                <div class="modal-body">
+                <div class="modal-body d-flex flex-column justify-content-center">
                     <h2 class="text-center">Your workflow has been submitted, wait until it has finished (it could take
                         some time).</h2>
+
+                    <img class="mx-auto" src="{% static 'images/dancingChromo.gif' %}" alt="">
                 </div>
-
-                <img src="{% static 'images/dancingChromo.gif' %}" alt="">
-
             </div>
         </div>
     </div>
@@ -633,7 +622,8 @@
                 </div>
 
                 <div class="modal-body">
-                    <h2 class="text-center">The running has encountered an error. <br> Please, check the logfile to find out what went wrong.</h2>
+                    <h2 class="text-center">The running has encountered an error. <br> Please, check the logfile to find
+                        out what went wrong.</h2>
                 </div>
 
             </div>
