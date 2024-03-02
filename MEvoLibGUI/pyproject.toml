@@ -32,6 +32,9 @@ keywords = [
     "GUI",
     "MEvoLib",
 ]
+[tool.setuptools]
+py-modules = []
+
 dependencies = [
     "celery >= 5.3.6",
     "Django >= 4.2.7",
