@@ -21,13 +21,6 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="Home"),
-    path("simple_inference/", views.simple_inference, name="simple_inference"),
-    path("align_and_inference/", views.align_and_inference, name="align_and_inference"),
-    path(
-        "parametrized_inference/",
-        views.parametrized_inference,
-        name="parametrized_inference",
-    ),
     path("full_workflow/", views.full_workflow, name="full_workflow"),
     path("check_task_status/", views.check_task_status, name="check_task_status"),
     path("download_task_zip/", views.download_task_zip, name="download_task_zip"),    

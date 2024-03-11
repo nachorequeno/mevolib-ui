@@ -1,7 +1,7 @@
 
 process GET_ALIGN {
     tag "$alignment"
-    publishDir "./output/${params.output_name}/align", mode: 'copy', overwrite: false
+    publishDir "${params.output_dir}/alignments/${params.output_name}", mode: 'copy', overwrite: true
     
     input:
         path unaligned_files
@@ -11,7 +11,7 @@ process GET_ALIGN {
        
     shell:
         '''
-        get_align -t !{params.tools.align_tool} -i !{unaligned_files} -o !{params.output_name}
+        get_align -t !{params.tools.align_tool} -i !{unaligned_files}
         '''
 }
 

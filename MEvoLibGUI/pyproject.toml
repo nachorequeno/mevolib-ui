@@ -42,13 +42,15 @@ dependencies = [
     "nextflow >= 22.10.7",
     "nextflowpy >= 0.8.1",
     "redis >= 5.0.1",
+    "python-dotenv >= 1.0.1"
 ]
 
 [project.optional-dependencies]
 dev = [
     "black",
-    "pylint",
-    "python-dotenv"
+    "mypy",
+    "pylint"
+
 ]
 
 [project.urls]

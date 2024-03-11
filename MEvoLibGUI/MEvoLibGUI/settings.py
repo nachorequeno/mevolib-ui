@@ -111,11 +111,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-NEXTFLOW_PIPELINE_ROOT = Path("nextflowFiles").joinpath("workflows")
-NEXTFLOW_DATA_ROOT = Path("nextflowFiles").joinpath("data")
 NEXTFLOW_UPLOADS_ROOT = Path("nextflowFiles").joinpath("uploads")
-NEXTFLOW_PUBLISH_DIR_ROOT = Path("nextflowFiles").joinpath("publish")
-NEXTFLOW_REPORTS_DIR_ROOT = Path("nextflowFiles").joinpath("reports")
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 

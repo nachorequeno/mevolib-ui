@@ -34,94 +34,13 @@
     <!-- Buttons to toggle the modals that contain the different operations (only align, align and inference...) thw user can perform. -->
     <div class="my-5 mx-4 row">
         <div class="my-3">
-            <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#simple_inf_modal">Get a simple inference</button>
-            <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#parametrized_inf_modal">Get a parametrized inference</button>
-        </div>
-        <div>
-            <button type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#align_inf_modal">Get
-                an aligment + inference</button>
             <button id="full_wf_but" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-                data-bs-target="#full_wf_modal">Get
-                full workflow</button>
+            data-bs-target="#full_wf_modal">Get
+            full workflow</button>
         </div>
 
     </div>
 
-    <!-- Simple inference workflow modal. -->
-    <div id="simple_inf_modal" class="modal top fade" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Simple inference</h2>
-                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <!-- In this case, the user will launch an inference workflow by uploading an aligned DNA sequences file. -->
-                <div class="modal-body">
-                    <form id="simple_inf_form" action="/simple_inference/" method="POST" placeholder=""
-                        enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{al_form}}
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Get inference</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Parametrized inference workflow modal. -->
-    <div id="parametrized_inf_modal" class="modal top fade" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Parametrized inference</h2>
-                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="param_inf_form" action="/parametrized_inference/" method="POST" placeholder=""
-                        enctype="multipart/form-data">
-
-                        {% csrf_token %}
-                        {{param_form.as_p}}
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Get inference</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Align and inference workflow modal.-->
-    <div id="align_inf_modal" class="modal top fade" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Align and inference</h2>
-                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <!-- In this case, the user will get both, an alignment and an inference from an unaligned DNA sequences file.-->
-                <div class="modal-body">
-                    <form id="align_inf_form" action="/align_and_inference/" method="POST" placeholder=""
-                        enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{al_inf_form}}
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Get inference</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Full workflow modal.-->
     <div id="full_wf_modal" class="modal modal-md top fade" data-bs-backdrop="static">

@@ -72,6 +72,8 @@ function checkTaskStatus(task_id, task_hash, zip_name){
             var task_status = response["task_status"]
 
             if(task_status === "SUCCESS"){  // If it finishes successfully, another function to get the generated files will be called.
+                $("#full_workflow_successful_modal").modal("hide")
+                $("#full_workflow_finished_modal").modal("show")
                 download_task_zip(task_hash, zip_name);
             }
             else if(task_status === "FAILURE"){          // If it fails, the user will be notified.
@@ -111,9 +113,6 @@ function download_task_zip(task_hash, zip_name){  // An AJAX call makes the serv
         },
        
         success: function(response){    // If all goes fine, the user will get a message to tell them the zip has been downloaded.
-
-            $("#full_workflow_successful_modal").modal("hide")
-            $("#full_workflow_finished_modal").modal("show")
 
             // A zip link is generated and clicked in the background, so that user does not need to click on it.
             var link = document.createElement('a'); // Link (a href...) element dynamically generated and added to the DOM.
