@@ -48,9 +48,8 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "black",
-    "mypy",
-    "pylint"
-
+    "pylint",
+    "python-dotenv"
 ]
 
 [project.urls]
