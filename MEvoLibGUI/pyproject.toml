@@ -21,10 +21,10 @@ dynamic = [
     "version",
 ]
 requires-python = ">= 3.10.6"
-description = "Graphical User Interface for a DNA analysis library (MEvoLIb)"
+description = "Graphical User Interface for a DNA analysis library (MEvoLib)"
 readme = "README.md"
 authors = [
-    {name = "Sergio Moragón Jiménez", email = "smoragonj@gmail.com"}
+    {name = "Sergio Moragon Jimenez", email = "smoragonj@gmail.com"}
 ]
 license = {text = "Apache License 2.0"}
 keywords = [

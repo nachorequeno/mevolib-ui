@@ -98,7 +98,7 @@ If you do CTRL + left click on it, the GUI will be opened in a browser (as, for 
 
 # **P**ossible **E**rrors
 
-Redis-server command might fail the first time you execute it in a server, throwing an error like this:
+- Redis-server command might fail the first time you execute it in a server, throwing an error like this:
 ```bash
   Could not create server TCP listening socket *:6379: bind: Address already in use
 ```
@@ -119,13 +119,18 @@ You have to copy the identifier of the process on top of both (a pair of them no
 ```
 That must do it.
 
+- Another error you may run into is something like "OSError: [Errno 12] Cannot allocate memory...". This means
+your RAM memory is overused, and you might have many processes running in background without realizing it, so
+make sure to kill the processes by using the same redis technique, as loads of celery workers could be
+draining your resources.
+
 After that, the only thing that remains is interacting with the interface.
 You can open the full workflow form by clicking the button named after this, and then select the stages
 you want to run by clicking on the checkboxes, and filling mandatory fields.
 Do not worry if you do not know how to do it, when you press "Send", the GUI will tell you if there is
-any error, empty/invalid field or whatever goes bad.
+any error, empty/invalid field or whatever goes bad, guiding you every single time.
 The last step is just to wait until your process has finished, and the results of each stage, alongside
 with a brief report of CPU and memory usage (if all goes fine) or a log indicating the cause of the failure
-(if there is any problem).
+(if there is any problem) will be donwloaded.
 
 So, enjoy it!!

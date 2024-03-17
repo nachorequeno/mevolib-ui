@@ -1,3 +1,18 @@
+/* See the NOTICE file distributed with this work for additional information
+ regarding copyright ownership.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.*/
+
 "use strict"
 
 $("#full_wf_form").on("submit", function(event){ 
@@ -79,6 +94,7 @@ function checkTaskStatus(task_id, task_hash, zip_name){
             else if(task_status === "FAILURE"){          // If it fails, the user will be notified.
                 $("#full_workflow_successful_modal").modal("hide")
                 $("#full_workflow_failed_modal").modal("show")
+                download_task_zip(task_hash)
             }
             else if(task_status === "PENDING"){   // If it has not finished yet, it will be called again within a couple of seconds.
                 setTimeout(function() {
