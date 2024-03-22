@@ -21,11 +21,11 @@ from Bio.SeqIO import _converter
 from Bio.AlignIO import _FormatToWriter
 import re
 
-from MEvoLib.mevolib.align import _TOOL_TO_LIB as align_tools
-from MEvoLib.mevolib.cluster import _METHOD_TO_FUNC as cluster_tools
-from MEvoLib.mevolib.inference._FastTree import SPRT_INFILE_FORMATS as fasttree_formats
-from MEvoLib.mevolib.inference._RAxML import SPRT_INFILE_FORMATS as raxml_formats
-from MEvoLib.mevolib.inference import _PHYLO_TOOL_TO_LIB as inference_tools
+from mevolib.align import _TOOL_TO_LIB as align_tools
+from mevolib.cluster import _METHOD_TO_FUNC as cluster_tools
+from mevolib.inference._FastTree import SPRT_INFILE_FORMATS as fasttree_formats
+from mevolib.inference._RAxML import SPRT_INFILE_FORMATS as raxml_formats
+from mevolib.inference import _PHYLO_TOOL_TO_LIB as inference_tools
 
 ALIGN_OUTPUT =  ['fasta'] + list(_FormatToWriter.keys())       # Allowed alignment output formats.
 
