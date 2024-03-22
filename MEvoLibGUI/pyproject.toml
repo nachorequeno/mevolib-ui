@@ -18,7 +18,7 @@
 [project]
 name = "MEvoLibGUI"
 version = "0.1"
-requires-python = ">= 3.10"
+requires-python = ">= 3.9"
 description = "Graphical User Interface for a DNA analysis library (MEvoLib)"
 readme = "README.md"
 authors = [
