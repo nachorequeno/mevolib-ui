@@ -1,0 +1,571 @@
+<!-- See the NOTICE file distributed with this work for additional information
+ regarding copyright ownership.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License. -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- BootStrap and own stylesheet css imports. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'styles/global.css' %}">
+
+    <!-- BootStrap and JQuery scripts imports. -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Webpage title. -->
+    <title>MEvoLib</title>
+
+</head>
+
+<body class="mt-5">
+
+    <!-- Home page title. -->
+    <h1 class="text-center page_title"><b>Welcome to MEvoLib!</b></h1>
+
+    <!-- Token provided by Django and needed to prevent session hijack attacks. -->
+    {% csrf_token %}
+
+    <!-- Buttons to toggle the modals that contain the different operations (only align, align and inference...) thw user can perform. -->
+    <div class="my-5 mx-4 row">
+        <div class="my-3">
+            <button id="full_wf_but" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
+            data-bs-target="#full_wf_modal">Get
+            full workflow</button>
+        </div>
+
+    </div>
+
+
+    <!-- Full workflow modal.-->
+    <div id="full_wf_modal" class="modal modal-md top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Customizable workflow</h2>
+                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="full_wf_body" class="modal-body">
+
+                    <!-- In this case, the user is allowed to chose and customize thw whole workflow process
+                        through the manipulation of the stages through their parameters.-->
+
+                    <form id="full_wf_form" action="/full_workflow/" method="POST" placeholder=""
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div id="notes_section">
+                            <blockquote class="bg-info text-center"><b>NOTE: </b>The <b>fields</b> marked with an
+                                <b>asterisk (*)</b> are <b>required</b>.
+                            </blockquote>
+
+                        </div>
+
+                        <!-- Execute the fetch stage or not. -->
+                        <div id="check_fetch" class="form-check">
+                            <label id="fetch_label" class="form-check-label text-secondary form_label"
+                                for="add_fetch">Fetch</label>
+                            <input class="form-check-input my-2 main_check" type="checkbox" name="add_fetch"
+                                id="add_fetch">
+                        </div>
+
+                        <!-- Fetch parameters. -->
+                        <div id="fetch_params" class="workflow_params offset-1">
+
+                            <span class="my-2">Select one (<b>*</b>):</span>
+
+                            <div>
+
+                                <!-- The user has to choose: provide the whole fetch query, or the species. -->
+                                <div id="query_selector" class="form-check my-2">
+                                    <label class="form-check-label" for="query_opt">Query</label>
+                                    <input class="form-check-input fetch_required" type="radio" name="query_species"
+                                        id="query_opt">
+                                </div>
+
+                                <div id="species_selector" class="form-check my-2">
+                                    <label class="form-check-label" for="species_opt">Species</label>
+                                    <input class="form-check-input" type="radio" name="query_species" id="species_opt">
+
+                                </div>
+
+                                <div id="fetch_output" class="query_species_params offset-1 my-2 form-group">
+                                    <!-- Fetch output file name. -->
+                                    <label id="fetch_output_label" class="col-form-label output_label" for="fetch_output_name">Output name
+                                        (<b>*</b>):</label>
+
+                                    <div class="col-md-8 col-sm-10 col-12">
+                                        <input class="form-control fetch_required output_name" type="text" name="fetch_output_name"
+                                            id="fetch_output_name">
+                                    </div>
+
+                                    <span id="fetch_output_err" class="client_side_err text-danger my-2"></span>
+
+                                </div>
+
+                                <div id="query_params" class="query_species_params offset-1 my-2 form-group">
+
+                                    <!-- Fetch whole query. -->
+                                    <label class="col-form-label" for="fetch_query">Fetch query (<b>*</b>):</label>
+
+                                    <div class="col-md-8 col-sm-10 col-12">
+                                        <input class="form-control fetch_required" type="text" name="fetch_query"
+                                            id="fetch_query">
+                                    </div>
+
+                                </div>
+
+                                <div id="species_params" class="query_species_params">
+
+                                    <!-- Fetch species name. -->
+                                    <div class="offset-1 my-2 form-group ">
+
+                                        <label class="col-form-label" for="fetch_species">Species (<b>*</b>):</label>
+
+                                        <div class="col-md-8 col-sm-10 col-12">
+                                            <input class="form-control" type="text" name="fetch_species"
+                                                id="fetch_species fetch_required">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="offset-1 my-2 form-group">
+
+                                        <!-- Fetch sequence type. -->
+                                        <label class="col-form-label" for="fetch_seq_type">Sequence type:</label>
+
+                                        <div class="col-md-8 col-sm-10 col-12">
+                                            <input class="form-control" type="text" name="fetch_seq_type"
+                                                id="fetch_seq_type">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="offset-1 my-2 form-group">
+
+                                        <!-- Fetch reference sequence -->
+                                        <div class="form-check my-2">
+                                            <label class="form-check-label" for="fetch_ref_seq">Use reference
+                                                sequences</label>
+                                            <input class="form-check-input" type="checkbox" name="ref_seq"
+                                                id="fetch_ref_seq">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <!-- Execute the cluster stage or not. -->
+                        <div id="check_cluster" class="form-check">
+                            <label id="cluster_label" class="form-check-label text-secondary form_label"
+                                for="add_cluster">Cluster</label>
+                            <input class="form-check-input my-2 main_check" type="checkbox" name="add_cluster"
+                                id="add_cluster">
+                        </div>
+
+                        <!-- Cluster parameters -->
+                        <div id="cluster_params" class="workflow_params offset-1">
+
+                            <div class="offset-1 my-2 form-group">
+                                <!-- Clustering tool's selection. -->
+                                <label class="col-form-label" for="cluster_tool">Clustering tool (<b>*</b>):</label>
+
+                                <!-- Dynamically loads clustering tools, provided by the server in function of the ones available in MEvoLib. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="cluster_tool" id="cluster_tool">
+                                        <option value="">Select an option</option>
+                                        {% for tool in cluster_tools %}
+                                        <option value={{tool}}>{{tool}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                                <span id="cluster_tool_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster input sequences file, that will only be needed if the fetch stage has not been selected. -->
+                                <label class="col-form-label input_file_label" for="cluster_input">Input sequences file
+                                    (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control input_file" type="file" name="cluster_input"
+                                        id="cluster_input">
+                                </div>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster input file format. -->
+                                <label class="col-form-label input_file_format_label" for="cluster_input_format">Input
+                                    file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="cluster_input_format" id="cluster_input_format"
+                                        class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_input_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="cluster_input_format_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster output file name. -->
+                                <label id="cluster_output_label" class="col-form-label output_label" for="cluster_output">Output file name, without extension
+                                    (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control cluster_required output_name" type="text" name="cluster_output"
+                                        id="cluster_output">
+                                </div>
+
+
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
+                                <span id="cluster_output_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Execute the alignment stage or not. -->
+                        <div id="check_align" class="form-check">
+                            <label id="align_label" class="form-check-label text-secondary form_label"
+                                for="add_align">Align</label>
+                            <input class="form-check-input my-2 main_check" type="checkbox" name="add_align"
+                                id="add_align">
+                        </div>
+
+                        <!-- Alignment parameters. -->
+                        <div id="align_params" class="workflow_params offset-1">
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Alignment tool's selection. -->
+                                <label class="col-form-label" for="align_tool">Alignment tool (<b>*</b>):</label>
+
+                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="align_tool" id="align_tool">
+                                        <option value="">Select an option</option>
+                                        {% for tool in align_tools %}
+                                        <option value={{tool}}>{{tool}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                                <span id="align_tool_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Unaligned DNA sequences input file. -->
+                                <label class="col-form-label input_file_label" for="align_input">Input FASTA sequences
+                                    file (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control input_file" type="file" name="align_input"
+                                        id="align_input">
+                                </div>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Cluster input file format. -->
+                                <label class="col-form-label input_file_format_label" for="align_input_format">Input
+                                    file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="align_input_format" id="align_input_format" class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_input_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="align_input_format_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Alignment output file name. -->
+                                <label id="align_output_label" class="col-form-label output_label" for="align_output">Output file name, without extension
+                                    (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control align_required output_name" type="text" name="align_output"
+                                        id="align_output">
+                                </div>
+
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
+                                <span id="align_output_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Align's output file format. -->
+                                <label class="col-form-label" for="align_output_format">File output
+                                    format:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="align_output_format" id="align_output_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_align_output_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="align_file_err" class="server_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's arguments. -->
+                                <label class="col-form-label" for="align_arguments">Arguments:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control" type="text" name="align_arguments" id="align_arguments"
+                                        placeholder="By default, 'default'">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Execute the inference stage or not. -->
+                        <div id="check_inference" class="form-check">
+                            <label id="inference_label" class="form-check-label text-secondary form_label"
+                                for="add_inference">Inference</label>
+                            <input class="form-check-input my-2 main_check" type="checkbox" name="add_inference"
+                                id="add_inference">
+                        </div>
+
+                        <div id="inference_params" class="workflow_params offset-1">
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's tool selection. -->
+                                <label class="col-form-label" for="inference_tool">Inference tool (<b>*</b>):</label>
+
+                                <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="inference_tool" id="inference_tool">
+                                        <option value="">Select an option</option>
+                                        {% for tool in inference_tools %}
+                                        <option value={{tool}}>{{tool}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="inference_tool_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- DNA aligned sequences file. -->
+                                <label class="col-form-label input_file_label" for="inference_input">Input aligned
+                                    sequences file (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control input_file" type="file" name="inference_input"
+                                        accept="{{inference_input_accepted}}" id="inference_input">
+                                </div>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's input file format. -->
+                                <label class="col-form-label input_file_format_label" for="inference_input_format">Input
+                                    file format (<b>*</b>):</label>
+
+                                <!-- Dynamically loads allowed mimetypes, to prevent user from introducing invalid input types. -->
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="inference_input_format" id="inference_input_format"
+                                        class="input_file_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_input_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="inference_input_format_err" class="client_side_err text-danger my-2"></span>
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's output file name. -->
+                                <label id="inference_output_label" class="col-form-label output_label" for="inference_output">Output file name, without extension
+                                    (<b>*</b>):</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control inference_required output_name" type="text" name="inference_output"
+                                        id="inference_output">
+                                </div>
+
+                                <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
+                                <span id="inference_output_err" class="client_side_err text-danger my-2"></span>
+
+                            </div>
+
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's output file format. -->
+                                <label class="col-form-label" for="inference_output_format">File
+                                    output format:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <select name="inference_output_format" id="inference_output_format">
+                                        <option value="">Select an option</option>
+                                        {% for format in accepted_inference_output_mimetypes %}
+                                        <option value={{format}}>{{format}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <span id="inference_file_err" class="server_side_err text-danger my-2"></span>
+
+                            </div>
+
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's bootstraps. -->
+                                <label class="col-form-label" for="inference_bootstraps">Bootstraps:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control" type="number" min="0" max="10" value="0" on
+                                        name="inference_bootstraps" id="inference_bootstraps"
+                                        placeholder="By default, '0'">
+                                </div>
+
+                            </div>
+
+                            <div class="offset-1 my-2 form-group">
+
+                                <!-- Inference's arguments. -->
+                                <label class="col-form-label" for="inference_arguments">Arguments:</label>
+
+                                <div class="col-md-8 col-sm-10 col-12">
+                                    <input class="form-control" type="text" name="inference_arguments"
+                                        id="inference_arguments" placeholder="By default, 'default'">
+                                </div>
+
+                            </div>
+
+                        </div>
+                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                        <span id="stages_err" class="client_side_err text-danger my-2"></span>
+
+                </div>
+                <!-- Reset and submit buttons. -->
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal that will inform the user if they execute the full workflow and there are no errors. -->
+    <div id="full_workflow_successful_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content successful_modal">
+                <div class="modal-body d-flex flex-column justify-content-center">
+                    <h2 class="text-center">Your workflow has been submitted, wait until it has finished (it could take
+                        some time).</h2>
+
+                    <img class="mx-auto" src="{% static 'images/dancingChromo.gif' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="full_workflow_finished_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content successful_modal">
+
+                <div class="modal-header">
+                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h2 class="text-center">Your task has finished, and the files have been dropped to your Downloads
+                        menu. <br> Thanks for using MEvoLib!</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="full_workflow_failed_modal" class="modal top fade" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content failed_modal">
+
+                <div class="modal-header">
+                    <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <h2 class="text-center">The running has encountered an error. <br> Please, check the logfile to find
+                        out what went wrong.</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="{% static '/scripts/fullWorkflow.js' %}"></script>
+<script src="{% static '/scripts/fullWorkflowTask.js' %}"></script>
+
+</html>
