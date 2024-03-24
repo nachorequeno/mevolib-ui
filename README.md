@@ -1,7 +1,7 @@
 
 # Django Repository for MEvoLib Web-based Graphical User Interface
 
-First of all, MEvoLib is a library of freely available Python tools for molecular evolution.
+First of all, MEvoLib is a library of freely available Python tools for molecular evolution [link](https://github.com/JAlvarezJarreta/MEvoLib).
 
 This project has been developed based on the use of that library, keeping in mind to provide users:
 - An easier and more visual way to interact with MEvoLib.
