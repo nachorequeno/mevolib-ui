@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""
-ASGI config for MEvoLibGUI project.
+"""ASGI config for MEvoLibGUI project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -26,6 +24,7 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MEvoLibGUI.settings')
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MEvoLibGUI.settings")
 
 application = get_asgi_application()

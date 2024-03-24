@@ -12,9 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""
-URL configuration for MEvoLibGUI project.
+"""URL configuration for MEvoLibGUI project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -29,10 +27,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('nextflowApp.urls'))
-]
+
+urlpatterns = [path("admin/", admin.site.urls), path("", include("nextflowApp.urls"))]

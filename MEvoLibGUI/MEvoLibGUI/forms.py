@@ -14,9 +14,10 @@
 # limitations under the License.
 
 from django import forms
+from nextflowApp.formats import INFERENCE_FORMAT_STR
+
 from .settings import NEXTFLOW_UPLOADS_ROOT as ur
 
-from nextflowApp.formats import INFERENCE_FORMAT_STR
 
 INPUT_CLASSES = "col-md-6 col-sm-9 col-12 mx-md-2 my-md-1 mt-3 form-control-md"
 
@@ -24,27 +25,21 @@ INPUT_CLASSES = "col-md-6 col-sm-9 col-12 mx-md-2 my-md-1 mt-3 form-control-md"
 class AlignForm(forms.Form):
     aligned_file = forms.FileField(
         required=False,
-        widget=forms.FileInput(
-            attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}
-        ),
+        widget=forms.FileInput(attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}),
     )
 
 
 class AlignInfForm(forms.Form):
     unaligned_file = forms.FileField(
         required=False,
-        widget=forms.FileInput(
-            attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}
-        ),
+        widget=forms.FileInput(attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}),
     )
 
 
 class ParamInferenceForm(forms.Form):
     aligned_file = forms.FileField(
         required=False,
-        widget=forms.FileInput(
-            attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}
-        ),
+        widget=forms.FileInput(attrs={"required": "True", "accept": INFERENCE_FORMAT_STR}),
     )
 
     tool = forms.ChoiceField(
