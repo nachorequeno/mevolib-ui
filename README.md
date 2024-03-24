@@ -21,7 +21,7 @@ git clone https://github.com/nachorequeno/mevolib-ui.git
 
 Next, you have to install all of the dependencies:
 ```bash
-pip install mevolib-ui/MEvoLibGUI/.
+pip install -e mevolib-ui/MEvoLibGUI/.
 ```
 
 After that, generate the secret key and save it in a file named `.env`. You can do it by running the following command:
