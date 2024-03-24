@@ -17,10 +17,8 @@
 ## Generic configuration
 [project]
 name = "MEvoLibGUI"
-dynamic = [
-    "version",
-]
-requires-python = ">= 3.10.6"
+version = "0.1"
+requires-python = ">= 3.9"
 description = "Graphical User Interface for a DNA analysis library (MEvoLib)"
 readme = "README.md"
 authors = [
@@ -32,28 +30,30 @@ keywords = [
     "GUI",
     "MEvoLib",
 ]
-[tool.setuptools]
-py-modules = []
-
 dependencies = [
     "celery >= 5.3.6",
     "Django >= 4.2.7",
-    "MEvoLib >= 2.0",
+    "MEvoLib @ git+https://github.com/JAlvarezJarreta/mevolib",
     "nextflow >= 22.10.7",
     "nextflowpy >= 0.8.1",
+    "python-dotenv >= 1.0.1",
     "redis >= 5.0.1",
-    "python-dotenv >= 1.0.1"
 ]
 
 [project.optional-dependencies]
 dev = [
     "black",
+    "mypy",
     "pylint",
-    "python-dotenv"
+    "python-dotenv",
+    "types-requests",
 ]
 
 [project.urls]
 repository = "https://github.com/nachorequeno/mevolib-ui"
+
+[tool.setuptools]
+py-modules = []
 
 [tool.pylint.messages_control]
 max-line-length = 110
