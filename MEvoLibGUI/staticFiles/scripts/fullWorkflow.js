@@ -35,7 +35,7 @@ $("#add_fetch").on('change', function(event){
 
         hideSelectedInput();     /* If the fetch stage is selected, it does not make any sense to make the user to 
                                     introduce input files, as the workflow will start from fetch files, so the one
-                                    that could have beem selected is hidden and cleared; alongside with its label.*/
+                                    that could have been selected is hidden and cleared; alongside with its label.*/
                   
         $(".input_file").each(function(){   /* All the Cluster, Align and Inference file inputs are hidden alongside 
                                                their labels and file format, as there is no point on showing them if
@@ -219,7 +219,7 @@ $("#add_inference").on('change', function(event){
 
 
 function hideAndReset(){    /* All labels styles get back to normal ones and the whole form is reset. This function is triggered
-                               everytime the user opens the modal, in order to ensure it does not have any trash. */
+                               every time the user opens the modal, in order to ensure it does not have any trash. */
     $(".form_label").each(function(){
         $(this).removeClass("fw-bold text-primary").addClass("text-secondary").css({"font-size": "1.25em"});
     })
