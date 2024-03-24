@@ -8,6 +8,8 @@ This project has been developed based on the use of that library, keeping in min
 - A more controlled process, not only because of custom stages that will be run within the workflow (Fetch, Cluster, Align and Inference, for now), but also by providing all the available parameters for each stage in a single sight, listing the possibilities for each one.
 - A simpler way to get the results, as they will be stored in a ZIP that will be downloaded in the local machine after each requested process has finished. Even if it fails, a filtered log message will be displayed, so that the user has a clue of what went wrong.
 
+Note that currently MEvoLibGUI only works in Linux systems.
+
 ## License terms
 
 This Django package is open source software made available under the Apache 2.0 License terms. Please see the LICENSE file for further details.
