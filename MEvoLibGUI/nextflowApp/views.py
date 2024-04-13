@@ -212,6 +212,8 @@ def getQueryParams(request, params):  # Function to construct the whole workflow
 
     if "add_fetch" in req and req["add_fetch"] == "on":  # Fetch stage selected.
 
+        params["max_seqs"] = "3000"
+        
         if req["fetch_query"]:  # The full query is already given.
             params["query"] = req["fetch_query"]
 

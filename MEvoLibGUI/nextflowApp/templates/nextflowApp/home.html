@@ -33,6 +33,8 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <link rel="icon" type="image/jpg" href="{% static 'images/favicon.png' %}">
+
     <!-- Webpage title. -->
     <title>MEvoLib</title>
 
@@ -50,8 +52,8 @@
     <div class="my-5 mx-4 row">
         <div class="my-3">
             <button id="full_wf_but" type="button" class="btn btn-primary mx-3" data-bs-toggle="modal"
-            data-bs-target="#full_wf_modal">Get
-            full workflow</button>
+                data-bs-target="#full_wf_modal">Get
+                full workflow</button>
         </div>
 
     </div>
@@ -84,9 +86,10 @@
                         <!-- Execute the fetch stage or not. -->
                         <div id="check_fetch" class="form-check">
                             <label id="fetch_label" class="form-check-label text-secondary form_label"
-                                for="add_fetch">Fetch</label>
+                                for="add_fetch">Fetch </label>
                             <input class="form-check-input my-2 main_check" type="checkbox" name="add_fetch"
                                 id="add_fetch">
+                            <p class="text-secondary">(download DNA sequences from the NCBI)</p>
                         </div>
 
                         <!-- Fetch parameters. -->
@@ -111,12 +114,13 @@
 
                                 <div id="fetch_output" class="query_species_params offset-1 my-2 form-group">
                                     <!-- Fetch output file name. -->
-                                    <label id="fetch_output_label" class="col-form-label output_label" for="fetch_output_name">Output name
+                                    <label id="fetch_output_label" class="col-form-label output_label"
+                                        for="fetch_output_name">Output name
                                         (<b>*</b>):</label>
 
                                     <div class="col-md-8 col-sm-10 col-12">
-                                        <input class="form-control fetch_required output_name" type="text" name="fetch_output_name"
-                                            id="fetch_output_name">
+                                        <input class="form-control fetch_required output_name" type="text"
+                                            name="fetch_output_name" id="fetch_output_name">
                                     </div>
 
                                     <span id="fetch_output_err" class="client_side_err text-danger my-2"></span>
@@ -186,6 +190,8 @@
                                 for="add_cluster">Cluster</label>
                             <input class="form-check-input my-2 main_check" type="checkbox" name="add_cluster"
                                 id="add_cluster">
+                            <p class="text-secondary">(input sequences division into smaller ones, typically conforming
+                                genes)</p>
                         </div>
 
                         <!-- Cluster parameters -->
@@ -198,15 +204,11 @@
                                 <!-- Dynamically loads clustering tools, provided by the server in function of the ones available in MEvoLib. -->
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="cluster_tool" id="cluster_tool">
-                                        <option value="">Select an option</option>
                                         {% for tool in cluster_tools %}
                                         <option value={{tool}}>{{tool}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
-
-                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
-                                <span id="cluster_tool_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
@@ -247,12 +249,13 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Cluster output file name. -->
-                                <label id="cluster_output_label" class="col-form-label output_label" for="cluster_output">Output file name, without extension
+                                <label id="cluster_output_label" class="col-form-label output_label"
+                                    for="cluster_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control cluster_required output_name" type="text" name="cluster_output"
-                                        id="cluster_output">
+                                    <input class="form-control cluster_required output_name" type="text"
+                                        name="cluster_output" id="cluster_output">
                                 </div>
 
 
@@ -269,6 +272,7 @@
                                 for="add_align">Align</label>
                             <input class="form-check-input my-2 main_check" type="checkbox" name="add_align"
                                 id="add_align">
+                            <p class="text-secondary">(DNA sequences sort process)</p>
                         </div>
 
                         <!-- Alignment parameters. -->
@@ -282,15 +286,11 @@
                                 <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="align_tool" id="align_tool">
-                                        <option value="">Select an option</option>
                                         {% for tool in align_tools %}
                                         <option value={{tool}}>{{tool}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
-
-                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
-                                <span id="align_tool_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
@@ -330,12 +330,13 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Alignment output file name. -->
-                                <label id="align_output_label" class="col-form-label output_label" for="align_output">Output file name, without extension
+                                <label id="align_output_label" class="col-form-label output_label"
+                                    for="align_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control align_required output_name" type="text" name="align_output"
-                                        id="align_output">
+                                    <input class="form-control align_required output_name" type="text"
+                                        name="align_output" id="align_output">
                                 </div>
 
                                 <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
@@ -383,6 +384,7 @@
                                 for="add_inference">Inference</label>
                             <input class="form-check-input my-2 main_check" type="checkbox" name="add_inference"
                                 id="add_inference">
+                            <p class="text-secondary">(phylogenetic trees building stage)</p>
                         </div>
 
                         <div id="inference_params" class="workflow_params offset-1">
@@ -395,14 +397,11 @@
                                 <!-- Dynamically loads alignment tools, provided by the server in function of the ones available in MEvoLib. -->
                                 <div class="col-md-8 col-sm-10 col-12">
                                     <select name="inference_tool" id="inference_tool">
-                                        <option value="">Select an option</option>
                                         {% for tool in inference_tools %}
                                         <option value={{tool}}>{{tool}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
-
-                                <span id="inference_tool_err" class="client_side_err text-danger my-2"></span>
 
                             </div>
 
@@ -442,12 +441,13 @@
                             <div class="offset-1 my-2 form-group">
 
                                 <!-- Inference's output file name. -->
-                                <label id="inference_output_label" class="col-form-label output_label" for="inference_output">Output file name, without extension
+                                <label id="inference_output_label" class="col-form-label output_label"
+                                    for="inference_output">Output file name, without extension
                                     (<b>*</b>):</label>
 
                                 <div class="col-md-8 col-sm-10 col-12">
-                                    <input class="form-control inference_required output_name" type="text" name="inference_output"
-                                        id="inference_output">
+                                    <input class="form-control inference_required output_name" type="text"
+                                        name="inference_output" id="inference_output">
                                 </div>
 
                                 <!-- Client side error that pops up if the user has not introduced a trimmed non-empty output file name. -->
@@ -502,7 +502,7 @@
                             </div>
 
                         </div>
-                                <!-- Client side error that pops up if the user has not selected any alignment tool. -->
+                        <!-- Client side error that pops up if the user has not selected any alignment tool. -->
                         <span id="stages_err" class="client_side_err text-danger my-2"></span>
 
                 </div>
@@ -538,9 +538,13 @@
                     <button type="btn" class="btn btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <div class="modal-body">
-                    <h2 class="text-center">Your task has finished, and the files have been dropped to your Downloads
+                <div class="modal-body text-center">
+                    <h2 >Your task has finished, and the files have been dropped to your Downloads
                         menu. <br> Thanks for using MEvoLib!</h2>
+                    <h3><br> (Also, if you want, you can <a href="https://www.ncbi.nlm.nih.gov/projects/msaviewer/"
+                            target="_blank"> see
+                            your alignment</a> or <a href="https://itol.embl.de/upload.cgi" target="_blank">watch your
+                            inference tree</a>.) </h3>
                 </div>
 
             </div>
