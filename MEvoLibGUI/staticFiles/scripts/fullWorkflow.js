@@ -19,6 +19,7 @@
 $("#full_wf_but").on('click', function(event){
    hideAndReset();
    hideErrors();
+   setPreselectedOptions();
 })
 
 // ---- FETCH STAGE ----
@@ -240,6 +241,19 @@ function hideSelectedInput(){   /* If any stage (that is not fetch) had been sel
     })
 }
 
+
+function setPreselectedOptions(){
+
+    // A brief function to enable pre-selected options to all of the stages tools.
+
+    $('#cluster_tool option[value="genes"]').attr("selected",true).text("genes (suggested)");
+          
+    $('#align_tool option[value="mafft"]').attr("selected",true).text("mafft (suggested)");
+
+    $('#inference_tool option[value="fasttree"]').attr("selected",true).text("fasttree (suggested)");
+
+}
+
 function manageOutput(stage){
     
     $(".output_label").each(function(){
@@ -343,13 +357,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
     if($("#add_cluster").prop("checked")){
 
         
-        if($("#cluster_tool").val()===""){
-
-            $("#cluster_tool_err").text("Please, select a valid clustering tool.").show();
-            return false;
-        }
-
-        else if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){
+        if($("#cluster_input").hasClass("selected_input") && $("#cluster_input_format").val()===""){
 
             $("#cluster_input_format_err").text("Please, select a valid input file format.").show();
             return false;
@@ -358,13 +366,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_align").prop("checked")){
 
-        if($("#align_tool").val()===""){
-
-            $("#align_tool_err").text("Please, select a valid alignment tool.").show();
-            return false;
-        }
-
-        else if($("#align_input").hasClass("selected_input") && $("#align_input_format").val()===""){
+        if($("#align_input").hasClass("selected_input") && $("#align_input_format").val()===""){
 
             $("#align_input_format_err").text("Please, select a valid input file format.").show();
             return false;
@@ -373,12 +375,7 @@ function validateSelectFields(){    /* Client side validation to ensure the user
 
     if($("#add_inference").prop("checked")){
 
-        if($("#inference_tool").val()===""){
-            $("#inference_tool_err").text("Please, select a valid inference tool.").show();
-            return false;
-        }
-
-        else if($("#inference_input").hasClass("selected_input") && $("#inference_input_format").val()===""){
+        if($("#inference_input").hasClass("selected_input") && $("#inference_input_format").val()===""){
 
             $("#inference_input_format_err").text("Please, select a valid input file format.").show();
             return false;
