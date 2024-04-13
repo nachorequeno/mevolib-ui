@@ -19,7 +19,7 @@ $("#full_wf_form").on("submit", function(event){
 
     event.preventDefault(); /* If the user submits the form, the first thing to do is to prevent the server call, as the
                                submission would be much clearer (specially, in error case) if it was made via an AJAX call,
-                               and page's reload would not be neccessary; saving up resources.  */
+                               and page's reload would not be necessary; saving up resources.  */
    
     var formData = new FormData($("#full_wf_form")[0]); /* First, the data the server will received is initialized to all
                                                         the non-file parameters of the form. */
@@ -64,7 +64,7 @@ $("#full_wf_form").on("submit", function(event){
                 else if(response["inference_file_err"]) $("#inference_file_err").text(response["inference_file_err"]).show();
                 else{
                     $("#full_wf_modal").modal("hide")
-                    alert("An internal server error has occured.")
+                    alert("An internal server error has occurred.")
                 } 
                 
             }

@@ -5,39 +5,85 @@ import pathlib
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='AlignInferenceDocument',
+            name="AlignInferenceDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('docfile', models.FileField(upload_to=pathlib.PurePosixPath('nextflowFiles/uploads/align_inference'))),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "docfile",
+                    models.FileField(
+                        upload_to=pathlib.PurePosixPath("nextflowFiles/uploads/align_inference")
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='FullWorkflowDocument',
+            name="FullWorkflowDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('docfile', models.FileField(upload_to=pathlib.PurePosixPath('nextflowFiles/uploads/full_workflow'))),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "docfile",
+                    models.FileField(upload_to=pathlib.PurePosixPath("nextflowFiles/uploads/full_workflow")),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='InferenceDocument',
+            name="InferenceDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('docfile', models.FileField(upload_to=pathlib.PurePosixPath('nextflowFiles/uploads/inference'))),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "docfile",
+                    models.FileField(upload_to=pathlib.PurePosixPath("nextflowFiles/uploads/inference")),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='ParamInferenceDocument',
+            name="ParamInferenceDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('docfile', models.FileField(upload_to=pathlib.PurePosixPath('nextflowFiles/uploads/param_inference'))),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "docfile",
+                    models.FileField(
+                        upload_to=pathlib.PurePosixPath("nextflowFiles/uploads/param_inference")
+                    ),
+                ),
             ],
         ),
     ]
